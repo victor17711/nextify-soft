@@ -1,0 +1,220 @@
+{
+  "design_system": {
+    "identity": {
+      "name": "E1_Utility_Prime",
+      "archetype": "Soft Utility / The Performance Pro Hybrid",
+      "core_principle": "Clarity through Contrast. No generic gradients.",
+      "vibe": "Professional, geometric, highly legible, but with a 'tactile' quality that feels premium."
+    },
+    "typography": {
+      "font_family": {
+        "headings": "Outfit, sans-serif",
+        "body": "Public Sans, sans-serif",
+        "mono": "JetBrains Mono, monospace"
+      },
+      "imports": [
+        "https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap"
+      ],
+      "scale": {
+        "h1": "text-4xl font-bold tracking-tight lg:text-5xl",
+        "h2": "text-3xl font-semibold tracking-tight",
+        "h3": "text-2xl font-semibold tracking-tight",
+        "h4": "text-xl font-medium tracking-normal",
+        "body_lg": "text-lg leading-relaxed",
+        "body_base": "text-base leading-relaxed text-muted-foreground",
+        "body_sm": "text-sm font-medium leading-none",
+        "caption": "text-xs text-muted-foreground uppercase tracking-widest"
+      },
+      "rules": [
+        "NEVER use Inter for Headings.",
+        "Headings must be 'Outfit'. Body must be 'Public Sans'.",
+        "Use 'tracking-tight' for all headings larger than 24px.",
+        "Use 'tabular-nums' for all financial data (Budgets in Clients tab) and dates."
+      ]
+    },
+    "colors": {
+      "palette_name": "Indigo_Slate_Command",
+      "mode_strategy": "Dual Theme (Light/Dark)",
+      "css_variables": {
+        "light": {
+          "--background": "210 40% 98%",
+          "--foreground": "222 47% 11%",
+          "--card": "0 0% 100%",
+          "--card-foreground": "222 47% 11%",
+          "--popover": "0 0% 100%",
+          "--popover-foreground": "222 47% 11%",
+          "--primary": "243 75% 59%",
+          "--primary-foreground": "210 40% 98%",
+          "--secondary": "210 40% 96.1%",
+          "--secondary-foreground": "222 47% 11%",
+          "--muted": "210 40% 96.1%",
+          "--muted-foreground": "215 16% 47%",
+          "--accent": "243 75% 59%",
+          "--accent-foreground": "222 47% 11%",
+          "--destructive": "0 84.2% 60.2%",
+          "--destructive-foreground": "210 40% 98%",
+          "--border": "214 32% 91%",
+          "--input": "214 32% 91%",
+          "--ring": "243 75% 59%"
+        },
+        "dark": {
+          "--background": "222 47% 11%",
+          "--foreground": "210 40% 98%",
+          "--card": "222 47% 11%",
+          "--card-foreground": "210 40% 98%",
+          "--popover": "222 47% 11%",
+          "--popover-foreground": "210 40% 98%",
+          "--primary": "243 75% 59%",
+          "--primary-foreground": "210 40% 98%",
+          "--secondary": "217 33% 17%",
+          "--secondary-foreground": "210 40% 98%",
+          "--muted": "217 33% 17%",
+          "--muted-foreground": "215 20% 65%",
+          "--accent": "217 33% 17%",
+          "--accent-foreground": "210 40% 98%",
+          "--destructive": "0 62.8% 30.6%",
+          "--destructive-foreground": "210 40% 98%",
+          "--border": "217 33% 17%",
+          "--input": "217 33% 17%",
+          "--ring": "243 75% 59%"
+        }
+      },
+      "usage_rules": [
+        "Primary color is Deep Indigo (approx #4F46E5). Use for CTAs and active states.",
+        "FORBIDDEN: Do not use Teal (#1B93A4) for any UI element.",
+        "Sidebar in Light Mode: Must be Dark (Slate-900) for high contrast navigation.",
+        "Sidebar in Dark Mode: Matches background but with a subtle border-right.",
+        "Success States: Use Emerald Green, not standard Green.",
+        "Budget/Money Text: Use Monospace font or tabular-nums."
+      ]
+    },
+    "layout": {
+      "spacing_scale": "Generous (2x standard). Use p-6 or p-8 for card padding.",
+      "radius": "0.5rem (Rounded-lg)",
+      "structure": {
+        "dashboard": "Sidebar Layout (Fixed Left, 250px) + Scrollable Main Content.",
+        "mobile": "Hamburger menu triggers Sheet component for sidebar.",
+        "grid_system": "Bento Grid Mode B (High Density) for Admin Dashboard stats."
+      },
+      "container_rules": [
+        "Max width for content: max-w-7xl mx-auto.",
+        "Cards: 'Cardless' look for lists. Use borders between rows instead of boxing everything.",
+        "Widgets: Use 'Crystal Glass' style (white/70 backdrop-blur) for floating summary cards."
+      ]
+    },
+    "components": {
+      "buttons": {
+        "primary": "rounded-lg font-medium shadow-sm hover:translate-y-[-1px] transition-all",
+        "secondary": "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        "ghost": "hover:bg-accent hover:text-accent-foreground"
+      },
+      "cards": {
+        "style": "bg-card text-card-foreground shadow-sm border border-border/50",
+        "hover": "hover:shadow-md transition-shadow duration-200"
+      },
+      "inputs": {
+        "style": "h-10 rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+      },
+      "tables": {
+        "header": "bg-muted/50 font-medium text-muted-foreground",
+        "row": "hover:bg-muted/50 transition-colors data-[state=selected]:bg-muted",
+        "cell": "p-4 align-middle [&:has([role=checkbox])]:pr-0"
+      }
+    },
+    "visual_enhancers": {
+      "motion": {
+        "page_transition": "initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.3 }}",
+        "hover_lift": "hover:-translate-y-1 transition-transform duration-200",
+        "micro_interaction": "active:scale-95 transition-transform"
+      },
+      "textures": {
+        "noise": "Optional: Add a 2% noise overlay on the sidebar for tactile feel.",
+        "glass": "backdrop-blur-md bg-white/70 dark:bg-black/60 border border-white/20"
+      },
+      "shadows": {
+        "card": "0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)",
+        "floating": "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)"
+      }
+    }
+  },
+  "assets": {
+    "images": [
+      {
+        "category": "auth_background",
+        "url": "https://images.unsplash.com/photo-1580920900532-af6fcf2110df?crop=entropy&cs=srgb&fm=jpg&q=85",
+        "description": "Abstract white/gray concrete architecture. Use for Login Page Split Layout (Left side image, Right side form).",
+        "css_treatment": "object-cover w-full h-full grayscale opacity-80"
+      },
+      {
+        "category": "user_avatar_placeholder",
+        "url": "https://images.unsplash.com/photo-1659353220597-71b8c6a56259?crop=entropy&cs=srgb&fm=jpg&q=85",
+        "description": "Professional silhouette or generic avatar. Use for 'Profile' in sidebar.",
+        "css_treatment": "rounded-full object-cover aspect-square"
+      }
+    ],
+    "icons": {
+      "library": "lucide-react",
+      "mapping": {
+        "dashboard": "LayoutDashboard",
+        "employees": "Users",
+        "tasks": "CheckSquare",
+        "calendar": "CalendarDays",
+        "notes": "StickyNote",
+        "clients": "Briefcase",
+        "settings": "Settings",
+        "logout": "LogOut",
+        "theme_toggle": "Sun/Moon",
+        "notifications": "Bell"
+      }
+    }
+  },
+  "content_strategy": {
+    "language": "ro-RO",
+    "localization_map": {
+      "Dashboard": "Panou de Control",
+      "Employees": "Angajați",
+      "Tasks": "Sarcini",
+      "Calendar": "Calendar",
+      "Notes": "Notițe",
+      "Clients": "Clienți",
+      "Settings": "Setări",
+      "Log Out": "Deconectare",
+      "Login": "Autentificare",
+      "Email": "Email",
+      "Password": "Parolă",
+      "Add Employee": "Adaugă Angajat",
+      "Edit": "Editează",
+      "Delete": "Șterge",
+      "Save": "Salvează",
+      "Cancel": "Anulează",
+      "Status": "Status",
+      "Budget": "Buget",
+      "Project Type": "Tip Proiect"
+    },
+    "formats": {
+      "date": "dd.MM.yyyy",
+      "currency": "RON"
+    }
+  },
+  "implementation_instructions": {
+    "step_1_setup": "Update index.css with the provided CSS variables for the Indigo/Slate theme.",
+    "step_2_layout": "Create a `Layout` component that includes the Sidebar (fixed left) and Topbar (mobile only). Wrap all protected routes in this.",
+    "step_3_auth": "Build the Login page using the 'Split Layout' pattern (Image left, Form right). Center the form vertically.",
+    "step_4_dashboard": "Implement the Admin Dashboard using a Bento Grid. Top row: 4 Stats Cards (Total Employees, Active Tasks, Monthly Budget, Clients).",
+    "step_5_clients": "Build the Clients tab using Shadcn `Table`. Columns: Nume SRL, Tip Proiect, Buget (RON), Status (Badge).",
+    "step_6_tasks": "Use a Kanban board or List view for tasks. Add a 'Calendar' view using `react-day-picker` (Shadcn Calendar) customized to show dots for due dates.",
+    "step_7_theme": "Implement the ThemeProvider context to toggle the `.dark` class on the html/body element.",
+    "universal_rules": [
+      "ALL interactive elements (buttons, inputs) must have `data-testid` attributes.",
+      "Do NOT use gradients for backgrounds. Use solid colors or the provided image textures.",
+      "Ensure all text is Romanian."
+    ]
+  },
+  "universal_guidelines": {
+    "anti_slop": "Avoid generic centered layouts. Use asymmetry where possible.",
+    "interaction": "Add `active:scale-95` to all buttons for tactile feedback.",
+    "spacing": "Use `gap-6` or `gap-8` in grids. Don't crowd data.",
+    "z_index": "Use proper z-index layering for sticky headers and modals.",
+    "toasts": "Use `sonner` for all notifications (success/error)."
+  }
+}
