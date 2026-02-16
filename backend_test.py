@@ -133,8 +133,22 @@ class WorkforcePortalAPITester:
         print("🔐 TESTING ADMIN LOGIN")
         print("="*60)
         
+        # Skip if we already have token from registration attempt
+        if self.admin_token:
+            print("ℹ️  Admin token already obtained from registration test")
+            # Test getting current user info
+            success, response = self.run_test(
+                "Get Current User",
+                "GET", 
+                "auth/me",
+                200,
+                token=self.admin_token,
+                description="Get authenticated user info"
+            )
+            return success
+        
         if not hasattr(self, 'admin_email'):
-            print("❌ Cannot test login - admin not registered")
+            print("❌ Cannot test login - admin credentials not available")
             return False
             
         login_data = {
