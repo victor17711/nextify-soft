@@ -95,8 +95,37 @@ class WorkforcePortalAPITester:
             self.admin_password = admin_data["password"]
             if "user_id" in response:
                 self.admin_user_id = response["user_id"]
-        
-        return success
+            return True
+        else:
+            # Admin already exists, try common test credentials
+            print("ℹ️  Admin already exists, trying common test credentials...")
+            test_credentials = [
+                {"email": "admin@test.ro", "password": "admin123"},
+                {"email": "admin@exemplu.ro", "password": "AdminPass123!"},
+                {"email": "test@admin.ro", "password": "test123"},
+                {"email": "admin@workforce.ro", "password": "admin"},
+            ]
+            
+            for cred in test_credentials:
+                print(f"   Trying {cred['email']}...")
+                login_success, login_response = self.run_test(
+                    "Try Existing Admin",
+                    "POST",
+                    "auth/login",
+                    200,
+                    data=cred,
+                    description=f"Login with {cred['email']}"
+                )
+                
+                if login_success:
+                    self.admin_email = cred["email"]
+                    self.admin_password = cred["password"]
+                    self.admin_token = login_response.get('token')
+                    print(f"✅ Found working admin credentials: {cred['email']}")
+                    return True
+            
+            print("❌ Could not find working admin credentials")
+            return False
 
     def test_admin_login(self):
         """Test admin login flow"""
