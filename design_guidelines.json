@@ -193,7 +193,7 @@
     },
     "formats": {
       "date": "dd.MM.yyyy",
-      "currency": "RON"
+      "currency": "MDL"
     }
   },
   "implementation_instructions": {
@@ -201,7 +201,7 @@
     "step_2_layout": "Create a `Layout` component that includes the Sidebar (fixed left) and Topbar (mobile only). Wrap all protected routes in this.",
     "step_3_auth": "Build the Login page using the 'Split Layout' pattern (Image left, Form right). Center the form vertically.",
     "step_4_dashboard": "Implement the Admin Dashboard using a Bento Grid. Top row: 4 Stats Cards (Total Employees, Active Tasks, Monthly Budget, Clients).",
-    "step_5_clients": "Build the Clients tab using Shadcn `Table`. Columns: Nume SRL, Tip Proiect, Buget (RON), Status (Badge).",
+    "step_5_clients": "Build the Clients tab using Shadcn `Table`. Columns: Nume SRL, Tip Proiect, Buget (MDL), Status (Badge).",
     "step_6_tasks": "Use a Kanban board or List view for tasks. Add a 'Calendar' view using `react-day-picker` (Shadcn Calendar) customized to show dots for due dates.",
     "step_7_theme": "Implement the ThemeProvider context to toggle the `.dark` class on the html/body element.",
     "universal_rules": [

@@ -5,6 +5,7 @@ import { useTheme } from '../contexts/ThemeContext';
 import { Button } from './ui/button';
 import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
 import { Avatar, AvatarFallback } from './ui/avatar';
+import logo from '../assets/new-logo.png';
 import { 
   LayoutDashboard, 
   Users, 
@@ -45,12 +46,15 @@ const Sidebar = ({ mobile = false, onClose }) => {
   const NavContent = () => (
     <div className="flex flex-col h-full bg-slate-900 text-white">
       {/* Logo */}
-      <div className="p-6 border-b border-slate-700">
-        <h1 className="text-xl font-heading font-bold tracking-tight">
-          Workforce Portal
-        </h1>
-        <p className="text-xs text-slate-400 mt-1">Panou de Control</p>
-      </div>
+      <div className="p-6 border-b border-slate-700 flex flex-col items-start">
+  <img 
+    src={logo} 
+    alt="Logo" 
+    className="h-10 w-auto object-contain"
+  />
+  <p className="text-xs text-slate-400 mt-2">Nextify Workspace</p>
+</div>
+
 
       {/* Navigation */}
       <nav className="flex-1 p-4 space-y-1 overflow-y-auto">

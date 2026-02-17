@@ -89,7 +89,9 @@ export const Tasks = () => {
     
     try {
       const submitData = { ...formData };
-      if (!submitData.assigned_to) delete submitData.assigned_to;
+      if (!submitData.assigned_to || submitData.assigned_to === 'none') {
+  delete submitData.assigned_to;
+}
       if (!submitData.due_date) delete submitData.due_date;
       
       if (selectedTask) {
@@ -272,9 +274,9 @@ export const Tasks = () => {
                         <SelectValue placeholder="Selectează..." />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="">Neatribuit</SelectItem>
+                        <SelectItem value="none">Neatribuit</SelectItem>
                         {employees.map((emp) => (
-                          <SelectItem key={emp.id} value={emp.id}>
+                          <SelectItem key={emp.id} value={String(emp.id)}>
                             {emp.name}
                           </SelectItem>
                         ))}

@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components/ui/table';
 import { Badge } from '../components/ui/badge';
 import { toast } from 'sonner';
-import { Plus, Pencil, Trash2, Briefcase, Search, Building2, Phone, Mail } from 'lucide-react';
+import { Plus, Pencil, Trash2, Briefcase, Search, Building2, Phone, Mail, User } from 'lucide-react';
 
 const API_URL = process.env.REACT_APP_BACKEND_URL;
 
@@ -156,7 +156,7 @@ export const Clients = () => {
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat('ro-RO', {
       style: 'currency',
-      currency: 'RON',
+      currency: 'MDL',
       minimumFractionDigits: 0,
       maximumFractionDigits: 0
     }).format(amount);
@@ -218,7 +218,7 @@ export const Clients = () => {
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="budget">Buget (RON)</Label>
+                  <Label htmlFor="budget">Buget (MDL)</Label>
                   <Input
                     id="budget"
                     type="number"
@@ -341,7 +341,7 @@ export const Clients = () => {
         <Card className="border-border/50 shadow-sm">
           <CardContent className="p-4 flex items-center gap-4">
             <div className="p-3 bg-blue-500/10 rounded-lg">
-              <span className="text-xl font-bold text-blue-500">RON</span>
+              <span className="text-xl font-bold text-blue-500">MDL</span>
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Buget Total</p>
@@ -478,7 +478,7 @@ export const Clients = () => {
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">Status</p>
-                <Badge className={`${statusColors[selectedClient.status]} text-white mt-1`}>
+                <Badge className={`${statusColors[selectedClient.status]} text-white mt-1 mb-6`}>
                   {statusLabels[selectedClient.status]}
                 </Badge>
               </div>
@@ -487,8 +487,12 @@ export const Clients = () => {
                   <h4 className="text-sm font-medium mb-3">Informații Contact</h4>
                   <div className="space-y-2">
                     {selectedClient.contact_person && (
-                      <p className="text-sm">{selectedClient.contact_person}</p>
-                    )}
+  <div className="flex items-center gap-2 text-sm">
+    <User className="h-4 w-4 text-muted-foreground" />
+    {selectedClient.contact_person}
+  </div>
+)}
+
                     {selectedClient.contact_email && (
                       <div className="flex items-center gap-2 text-sm text-muted-foreground">
                         <Mail className="h-4 w-4" />
@@ -496,7 +500,7 @@ export const Clients = () => {
                       </div>
                     )}
                     {selectedClient.contact_phone && (
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
                         <Phone className="h-4 w-4" />
                         {selectedClient.contact_phone}
                       </div>

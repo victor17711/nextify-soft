@@ -9,6 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../co
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
 import { toast } from 'sonner';
 import { Sun, Moon, LogIn, UserPlus } from 'lucide-react';
+import logo from '../assets/new-logo.png';
 
 export const Login = () => {
   const navigate = useNavigate();
@@ -61,11 +62,18 @@ export const Login = () => {
         />
         <div className="absolute inset-0 bg-gradient-to-r from-slate-900/80 to-slate-900/40 flex items-center justify-center">
           <div className="text-white text-center px-12">
+<div className="flex justify-center">
+  <img 
+    src={logo} 
+    alt="Logo" 
+    className="h-24 w-auto object-contain"
+  />
+</div>
             <h1 className="text-5xl font-heading font-bold tracking-tight mb-4">
-              Workforce Portal
+              Workspace Zone
             </h1>
             <p className="text-lg text-slate-300">
-              Gestionați echipa și proiectele într-un singur loc
+              Digital solutions for your business !
             </p>
           </div>
         </div>
@@ -97,6 +105,15 @@ export const Login = () => {
             </p>
           </div>
 
+<div className="text-center mb-6">
+  <h2 className="text-3xl font-semibold tracking-tight">
+    Conectează-te
+  </h2>
+  <p className="text-m text-muted-foreground mt-1">
+    Introdu datele tale pentru a continua
+  </p>
+</div>
+
           <Card className="border-border/50 shadow-lg">
             <Tabs defaultValue="login" className="w-full">
               <CardHeader>
@@ -115,7 +132,7 @@ export const Login = () => {
                       <Input
                         id="login-email"
                         type="email"
-                        placeholder="email@exemplu.ro"
+                        placeholder="email@nextify.md"
                         value={loginData.email}
                         onChange={(e) => setLoginData({ ...loginData, email: e.target.value })}
                         data-testid="login-email-input"
