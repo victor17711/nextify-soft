@@ -500,30 +500,63 @@ async def get_dashboard_stats(current_user: dict = Depends(get_current_user)):
         total_employees = await db.users.count_documents({"role": "employee"})
         total_tasks = await db.tasks.count_documents({})
         pending_tasks = await db.tasks.count_documents({"status": "pending"})
+        in_progress_tasks = await db.tasks.count_documents({"status": "in_progress"})
         completed_tasks = await db.tasks.count_documents({"status": "completed"})
         total_clients = await db.clients.count_documents({})
+        active_clients = await db.clients.count_documents({"status": "activ"})
         
-        # Calculate total budget
-        clients = await db.clients.find({}, {"_id": 0, "budget": 1}).to_list(1000)
+        # Calculate total budget and monthly revenue
+        clients = await db.clients.find({}, {"_id": 0, "budget": 1, "monthly_fee": 1, "project_type": 1, "status": 1}).to_list(1000)
         total_budget = sum(c.get("budget", 0) for c in clients)
+        monthly_revenue = sum(c.get("monthly_fee", 0) or 0 for c in clients if c.get("status") == "activ")
+        
+        # Get employees list
+        employees = await db.users.find({"role": "employee"}, {"_id": 0, "password_hash": 0}).to_list(100)
+        
+        # Get recent tasks
+        recent_tasks = await db.tasks.find({}, {"_id": 0}).sort("created_at", -1).to_list(5)
+        for task in recent_tasks:
+            assignees = []
+            if task.get("assigned_to"):
+                for user_id in task["assigned_to"]:
+                    assignee = await db.users.find_one({"id": user_id}, {"_id": 0, "password_hash": 0, "name": 1})
+                    if assignee:
+                        assignees.append(assignee)
+            task["assignees"] = assignees
+        
+        # Revenue by project type
+        revenue_by_type = {}
+        for c in clients:
+            ptype = c.get("project_type", "Altele")
+            if ptype not in revenue_by_type:
+                revenue_by_type[ptype] = 0
+            revenue_by_type[ptype] += c.get("budget", 0)
         
         return {
             "total_employees": total_employees,
             "total_tasks": total_tasks,
             "pending_tasks": pending_tasks,
+            "in_progress_tasks": in_progress_tasks,
             "completed_tasks": completed_tasks,
             "total_clients": total_clients,
-            "total_budget": total_budget
+            "active_clients": active_clients,
+            "total_budget": total_budget,
+            "monthly_revenue": monthly_revenue,
+            "employees": employees,
+            "recent_tasks": recent_tasks,
+            "revenue_by_type": revenue_by_type
         }
     else:
         # Employee stats
         my_tasks = await db.tasks.count_documents({"assigned_to": current_user["user_id"]})
         my_pending = await db.tasks.count_documents({"assigned_to": current_user["user_id"], "status": "pending"})
+        my_in_progress = await db.tasks.count_documents({"assigned_to": current_user["user_id"], "status": "in_progress"})
         my_completed = await db.tasks.count_documents({"assigned_to": current_user["user_id"], "status": "completed"})
         
         return {
             "my_tasks": my_tasks,
             "my_pending": my_pending,
+            "my_in_progress": my_in_progress,
             "my_completed": my_completed
         }
 
