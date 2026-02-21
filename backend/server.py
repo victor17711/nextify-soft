@@ -295,13 +295,18 @@ async def get_tasks(current_user: dict = Depends(get_current_user)):
     if current_user["role"] == "admin":
         tasks = await db.tasks.find({}, {"_id": 0}).to_list(1000)
     else:
+        # Employee sees tasks where they are in assigned_to list
         tasks = await db.tasks.find({"assigned_to": current_user["user_id"]}, {"_id": 0}).to_list(1000)
     
-    # Add assignee info
+    # Add assignees info
     for task in tasks:
+        assignees = []
         if task.get("assigned_to"):
-            assignee = await db.users.find_one({"id": task["assigned_to"]}, {"_id": 0, "password_hash": 0})
-            task["assignee"] = assignee
+            for user_id in task["assigned_to"]:
+                assignee = await db.users.find_one({"id": user_id}, {"_id": 0, "password_hash": 0})
+                if assignee:
+                    assignees.append(assignee)
+        task["assignees"] = assignees
     
     return tasks
 
@@ -312,7 +317,7 @@ async def get_task(task_id: str, current_user: dict = Depends(get_current_user))
         raise HTTPException(status_code=404, detail="Sarcină negăsită")
     
     # Employees can only see their own tasks
-    if current_user["role"] != "admin" and task.get("assigned_to") != current_user["user_id"]:
+    if current_user["role"] != "admin" and current_user["user_id"] not in task.get("assigned_to", []):
         raise HTTPException(status_code=403, detail="Acces interzis")
     
     return task
@@ -344,7 +349,7 @@ async def update_task(task_id: str, request: TaskUpdate, current_user: dict = De
     
     # Employees can only update status of their own tasks
     if current_user["role"] != "admin":
-        if task.get("assigned_to") != current_user["user_id"]:
+        if current_user["user_id"] not in task.get("assigned_to", []):
             raise HTTPException(status_code=403, detail="Acces interzis")
         # Employees can only update status
         update_data = {}
