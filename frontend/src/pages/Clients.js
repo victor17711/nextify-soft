@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components/ui/table';
 import { Badge } from '../components/ui/badge';
 import { toast } from 'sonner';
-import { Plus, Pencil, Trash2, Briefcase, Search, Building2, Phone, Mail, User } from 'lucide-react';
+import { Plus, Pencil, Trash2, Briefcase, Search, Building2, Phone, Mail, Repeat } from 'lucide-react';
 
 const API_URL = process.env.REACT_APP_BACKEND_URL;
 
@@ -51,6 +51,7 @@ export const Clients = () => {
     company_name: '',
     project_type: '',
     budget: '',
+    monthly_fee: '',
     status: 'activ',
     contact_person: '',
     contact_email: '',
@@ -79,7 +80,10 @@ export const Clients = () => {
     try {
       const submitData = {
         ...formData,
-        budget: parseFloat(formData.budget) || 0
+        budget: parseFloat(formData.budget) || 0,
+        monthly_fee: formData.project_type === 'Mentenanță' && formData.monthly_fee 
+          ? parseFloat(formData.monthly_fee) 
+          : null
       };
       
       if (selectedClient) {
@@ -105,6 +109,7 @@ export const Clients = () => {
       company_name: client.company_name,
       project_type: client.project_type,
       budget: client.budget.toString(),
+      monthly_fee: client.monthly_fee ? client.monthly_fee.toString() : '',
       status: client.status,
       contact_person: client.contact_person || '',
       contact_email: client.contact_email || '',
@@ -137,6 +142,7 @@ export const Clients = () => {
       company_name: '',
       project_type: '',
       budget: '',
+      monthly_fee: '',
       status: 'activ',
       contact_person: '',
       contact_email: '',
@@ -156,13 +162,16 @@ export const Clients = () => {
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat('ro-RO', {
       style: 'currency',
-      currency: 'MDL',
+      currency: 'RON',
       minimumFractionDigits: 0,
       maximumFractionDigits: 0
     }).format(amount);
   };
 
   const totalBudget = filteredClients.reduce((sum, c) => sum + (c.budget || 0), 0);
+  const monthlyRevenue = filteredClients
+    .filter(c => c.status === 'activ')
+    .reduce((sum, c) => sum + (c.monthly_fee || 0), 0);
 
   return (
     <div className="animate-fadeIn">
@@ -200,36 +209,81 @@ export const Clients = () => {
                   required
                 />
               </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="project_type">Tip Proiect</Label>
-                  <Select 
-                    value={formData.project_type} 
-                    onValueChange={(value) => setFormData({ ...formData, project_type: value })}
-                  >
-                    <SelectTrigger data-testid="client-project-type-select">
-                      <SelectValue placeholder="Selectează..." />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {projectTypes.map((type) => (
-                        <SelectItem key={type} value={type}>{type}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="budget">Buget (MDL)</Label>
-                  <Input
-                    id="budget"
-                    type="number"
-                    value={formData.budget}
-                    onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
-                    placeholder="10000"
-                    data-testid="client-budget-input"
-                    required
-                  />
-                </div>
+              <div className="space-y-2">
+                <Label htmlFor="project_type">Tip Proiect</Label>
+                <Select 
+                  value={formData.project_type} 
+                  onValueChange={(value) => setFormData({ ...formData, project_type: value })}
+                >
+                  <SelectTrigger data-testid="client-project-type-select">
+                    <SelectValue placeholder="Selectează..." />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {projectTypes.map((type) => (
+                      <SelectItem key={type} value={type}>{type}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
+
+              {/* Budget Section */}
+              <div className="space-y-4 p-4 rounded-lg bg-muted/50 border border-border/50">
+                <h4 className="text-sm font-medium">Informații Financiare</h4>
+                
+                {formData.project_type === 'Mentenanță' ? (
+                  <>
+                    <div className="space-y-2">
+                      <Label htmlFor="monthly_fee" className="flex items-center gap-2">
+                        <Repeat className="h-4 w-4 text-primary" />
+                        Sumă Lunară (RON)
+                      </Label>
+                      <Input
+                        id="monthly_fee"
+                        type="number"
+                        value={formData.monthly_fee}
+                        onChange={(e) => setFormData({ ...formData, monthly_fee: e.target.value })}
+                        placeholder="ex: 2000"
+                        data-testid="client-monthly-fee-input"
+                      />
+                      <p className="text-xs text-muted-foreground">
+                        Suma recurentă lunară pentru contract de mentenanță
+                      </p>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="budget">Buget Inițial/Total (RON)</Label>
+                      <Input
+                        id="budget"
+                        type="number"
+                        value={formData.budget}
+                        onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
+                        placeholder="ex: 5000"
+                        data-testid="client-budget-input"
+                        required
+                      />
+                      <p className="text-xs text-muted-foreground">
+                        Suma inițială sau estimare anuală
+                      </p>
+                    </div>
+                  </>
+                ) : (
+                  <div className="space-y-2">
+                    <Label htmlFor="budget">Buget Proiect (RON)</Label>
+                    <Input
+                      id="budget"
+                      type="number"
+                      value={formData.budget}
+                      onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
+                      placeholder="ex: 15000"
+                      data-testid="client-budget-input"
+                      required
+                    />
+                    <p className="text-xs text-muted-foreground">
+                      Suma totală pentru proiect
+                    </p>
+                  </div>
+                )}
+              </div>
+
               <div className="space-y-2">
                 <Label htmlFor="status">Status</Label>
                 <Select 
@@ -312,7 +366,7 @@ export const Clients = () => {
         </Dialog>
       </div>
 
-      {/* Stats Card */}
+      {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         <Card className="border-border/50 shadow-sm">
           <CardContent className="p-4 flex items-center gap-4">
@@ -328,20 +382,18 @@ export const Clients = () => {
         <Card className="border-border/50 shadow-sm">
           <CardContent className="p-4 flex items-center gap-4">
             <div className="p-3 bg-emerald-500/10 rounded-lg">
-              <Building2 className="h-6 w-6 text-emerald-500" />
+              <Repeat className="h-6 w-6 text-emerald-500" />
             </div>
             <div>
-              <p className="text-sm text-muted-foreground">Clienți Activi</p>
-              <p className="text-2xl font-heading font-bold tabular-nums">
-                {clients.filter(c => c.status === 'activ').length}
-              </p>
+              <p className="text-sm text-muted-foreground">Venit Lunar Recurent</p>
+              <p className="text-2xl font-heading font-bold tabular-nums">{formatCurrency(monthlyRevenue)}</p>
             </div>
           </CardContent>
         </Card>
         <Card className="border-border/50 shadow-sm">
           <CardContent className="p-4 flex items-center gap-4">
             <div className="p-3 bg-blue-500/10 rounded-lg">
-              <span className="text-xl font-bold text-blue-500">MDL</span>
+              <span className="text-xl font-bold text-blue-500">RON</span>
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Buget Total</p>
@@ -398,6 +450,7 @@ export const Clients = () => {
                   <TableHead className="font-medium">Companie</TableHead>
                   <TableHead className="font-medium">Tip Proiect</TableHead>
                   <TableHead className="font-medium text-right">Buget</TableHead>
+                  <TableHead className="font-medium text-right">Lunar</TableHead>
                   <TableHead className="font-medium">Status</TableHead>
                   <TableHead className="font-medium">Contact</TableHead>
                   <TableHead className="font-medium text-right">Acțiuni</TableHead>
@@ -412,9 +465,25 @@ export const Clients = () => {
                     onClick={() => handleView(client)}
                   >
                     <TableCell className="font-medium">{client.company_name}</TableCell>
-                    <TableCell>{client.project_type}</TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-2">
+                        {client.project_type}
+                        {client.project_type === 'Mentenanță' && (
+                          <Repeat className="h-3 w-3 text-emerald-500" />
+                        )}
+                      </div>
+                    </TableCell>
                     <TableCell className="text-right tabular-nums font-medium">
                       {formatCurrency(client.budget)}
+                    </TableCell>
+                    <TableCell className="text-right tabular-nums">
+                      {client.monthly_fee ? (
+                        <span className="text-emerald-600 dark:text-emerald-400 font-medium">
+                          {formatCurrency(client.monthly_fee)}/lună
+                        </span>
+                      ) : (
+                        <span className="text-muted-foreground">-</span>
+                      )}
                     </TableCell>
                     <TableCell>
                       <Badge className={`${statusColors[client.status]} text-white`}>
@@ -469,30 +538,49 @@ export const Clients = () => {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <p className="text-sm text-muted-foreground">Tip Proiect</p>
-                  <p className="font-medium">{selectedClient.project_type}</p>
+                  <p className="font-medium flex items-center gap-2">
+                    {selectedClient.project_type}
+                    {selectedClient.project_type === 'Mentenanță' && (
+                      <Repeat className="h-4 w-4 text-emerald-500" />
+                    )}
+                  </p>
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Buget</p>
-                  <p className="font-medium tabular-nums">{formatCurrency(selectedClient.budget)}</p>
+                  <p className="text-sm text-muted-foreground">Status</p>
+                  <Badge className={`${statusColors[selectedClient.status]} text-white mt-1`}>
+                    {statusLabels[selectedClient.status]}
+                  </Badge>
                 </div>
               </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Status</p>
-                <Badge className={`${statusColors[selectedClient.status]} text-white mt-1 mb-6`}>
-                  {statusLabels[selectedClient.status]}
-                </Badge>
+              
+              {/* Financial Info */}
+              <div className="p-4 rounded-lg bg-muted/50 border border-border/50 space-y-3">
+                <h4 className="text-sm font-medium">Informații Financiare</h4>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-sm text-muted-foreground">
+                      {selectedClient.project_type === 'Mentenanță' ? 'Buget Inițial' : 'Buget Proiect'}
+                    </p>
+                    <p className="text-lg font-bold tabular-nums">{formatCurrency(selectedClient.budget)}</p>
+                  </div>
+                  {selectedClient.monthly_fee && (
+                    <div>
+                      <p className="text-sm text-muted-foreground">Sumă Lunară</p>
+                      <p className="text-lg font-bold tabular-nums text-emerald-600 dark:text-emerald-400">
+                        {formatCurrency(selectedClient.monthly_fee)}/lună
+                      </p>
+                    </div>
+                  )}
+                </div>
               </div>
+
               {(selectedClient.contact_person || selectedClient.contact_email || selectedClient.contact_phone) && (
                 <div className="border-t border-border pt-4">
                   <h4 className="text-sm font-medium mb-3">Informații Contact</h4>
                   <div className="space-y-2">
                     {selectedClient.contact_person && (
-  <div className="flex items-center gap-2 text-sm">
-    <User className="h-4 w-4 text-muted-foreground" />
-    {selectedClient.contact_person}
-  </div>
-)}
-
+                      <p className="text-sm">{selectedClient.contact_person}</p>
+                    )}
                     {selectedClient.contact_email && (
                       <div className="flex items-center gap-2 text-sm text-muted-foreground">
                         <Mail className="h-4 w-4" />
@@ -500,7 +588,7 @@ export const Clients = () => {
                       </div>
                     )}
                     {selectedClient.contact_phone && (
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
                         <Phone className="h-4 w-4" />
                         {selectedClient.contact_phone}
                       </div>
