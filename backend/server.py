@@ -519,7 +519,7 @@ async def get_dashboard_stats(current_user: dict = Depends(get_current_user)):
             assignees = []
             if task.get("assigned_to"):
                 for user_id in task["assigned_to"]:
-                    assignee = await db.users.find_one({"id": user_id}, {"_id": 0, "password_hash": 0, "name": 1})
+                    assignee = await db.users.find_one({"id": user_id}, {"_id": 0, "password_hash": 0})
                     if assignee:
                         assignees.append(assignee)
             task["assignees"] = assignees
