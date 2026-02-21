@@ -83,7 +83,7 @@ class TaskUpdate(BaseModel):
     due_date: Optional[str] = None
     priority: Optional[str] = None
     status: Optional[str] = None
-    assigned_to: Optional[str] = None
+    assigned_to: Optional[List[str]] = None
 
 class Task(TaskBase):
     model_config = ConfigDict(extra="ignore")
@@ -114,6 +114,7 @@ class ClientBase(BaseModel):
     company_name: str
     project_type: str
     budget: float
+    monthly_fee: Optional[float] = None  # For maintenance contracts
     status: str = "activ"  # activ, inactiv, finalizat
     contact_person: Optional[str] = None
     contact_email: Optional[EmailStr] = None
@@ -127,6 +128,7 @@ class ClientUpdate(BaseModel):
     company_name: Optional[str] = None
     project_type: Optional[str] = None
     budget: Optional[float] = None
+    monthly_fee: Optional[float] = None
     status: Optional[str] = None
     contact_person: Optional[str] = None
     contact_email: Optional[EmailStr] = None
