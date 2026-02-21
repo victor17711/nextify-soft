@@ -72,7 +72,7 @@ class TaskBase(BaseModel):
     due_date: Optional[str] = None  # ISO date string
     priority: str = "medium"  # low, medium, high
     status: str = "pending"  # pending, in_progress, completed
-    assigned_to: Optional[str] = None  # user id
+    assigned_to: List[str] = []  # list of user ids
 
 class TaskCreate(TaskBase):
     pass
