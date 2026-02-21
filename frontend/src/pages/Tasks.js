@@ -9,8 +9,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from '../components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
 import { Badge } from '../components/ui/badge';
+import { Checkbox } from '../components/ui/checkbox';
+import { ScrollArea } from '../components/ui/scroll-area';
 import { toast } from 'sonner';
-import { Plus, Pencil, Trash2, Calendar, User, Search, Filter } from 'lucide-react';
+import { Plus, Pencil, Trash2, Calendar, Users, Search, Filter, X } from 'lucide-react';
 
 const API_URL = process.env.REACT_APP_BACKEND_URL;
 
@@ -54,7 +56,7 @@ export const Tasks = () => {
     due_date: '',
     priority: 'medium',
     status: 'pending',
-    assigned_to: ''
+    assigned_to: []
   });
 
   useEffect(() => {
@@ -89,9 +91,6 @@ export const Tasks = () => {
     
     try {
       const submitData = { ...formData };
-      if (!submitData.assigned_to || submitData.assigned_to === 'none') {
-  delete submitData.assigned_to;
-}
       if (!submitData.due_date) delete submitData.due_date;
       
       if (selectedTask) {
@@ -129,7 +128,7 @@ export const Tasks = () => {
       due_date: task.due_date || '',
       priority: task.priority,
       status: task.status,
-      assigned_to: task.assigned_to || ''
+      assigned_to: task.assigned_to || []
     });
     setDialogOpen(true);
   };
@@ -154,7 +153,16 @@ export const Tasks = () => {
       due_date: '',
       priority: 'medium',
       status: 'pending',
-      assigned_to: ''
+      assigned_to: []
+    });
+  };
+
+  const toggleAssignee = (employeeId) => {
+    setFormData(prev => {
+      const newAssigned = prev.assigned_to.includes(employeeId)
+        ? prev.assigned_to.filter(id => id !== employeeId)
+        : [...prev.assigned_to, employeeId];
+      return { ...prev, assigned_to: newAssigned };
     });
   };
 
@@ -190,7 +198,7 @@ export const Tasks = () => {
                 Sarcină Nouă
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-lg">
+            <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto">
               <DialogHeader>
                 <DialogTitle className="font-heading">
                   {selectedTask ? 'Editează Sarcina' : 'Sarcină Nouă'}
@@ -247,43 +255,74 @@ export const Tasks = () => {
                     </Select>
                   </div>
                 </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="status">Status</Label>
-                    <Select 
-                      value={formData.status} 
-                      onValueChange={(value) => setFormData({ ...formData, status: value })}
-                    >
-                      <SelectTrigger data-testid="task-status-select">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="pending">În Așteptare</SelectItem>
-                        <SelectItem value="in_progress">În Progres</SelectItem>
-                        <SelectItem value="completed">Finalizat</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="assigned_to">Atribuit</Label>
-                    <Select 
-                      value={formData.assigned_to} 
-                      onValueChange={(value) => setFormData({ ...formData, assigned_to: value })}
-                    >
-                      <SelectTrigger data-testid="task-assigned-select">
-                        <SelectValue placeholder="Selectează..." />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="none">Neatribuit</SelectItem>
-                        {employees.map((emp) => (
-                          <SelectItem key={emp.id} value={String(emp.id)}>
-                            {emp.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
+                <div className="space-y-2">
+                  <Label htmlFor="status">Status</Label>
+                  <Select 
+                    value={formData.status} 
+                    onValueChange={(value) => setFormData({ ...formData, status: value })}
+                  >
+                    <SelectTrigger data-testid="task-status-select">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="pending">În Așteptare</SelectItem>
+                      <SelectItem value="in_progress">În Progres</SelectItem>
+                      <SelectItem value="completed">Finalizat</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
+                
+                {/* Multiple Assignees */}
+                <div className="space-y-2">
+                  <Label>Atribuiți Angajați</Label>
+                  {formData.assigned_to.length > 0 && (
+                    <div className="flex flex-wrap gap-2 mb-2">
+                      {formData.assigned_to.map(id => {
+                        const emp = employees.find(e => e.id === id);
+                        return emp ? (
+                          <Badge key={id} variant="secondary" className="pl-2 pr-1 py-1">
+                            {emp.name}
+                            <button
+                              type="button"
+                              onClick={() => toggleAssignee(id)}
+                              className="ml-1 hover:bg-muted rounded-full p-0.5"
+                            >
+                              <X className="h-3 w-3" />
+                            </button>
+                          </Badge>
+                        ) : null;
+                      })}
+                    </div>
+                  )}
+                  <ScrollArea className="h-[150px] border rounded-md p-2">
+                    <div className="space-y-2">
+                      {employees.length === 0 ? (
+                        <p className="text-sm text-muted-foreground text-center py-4">
+                          Nu există angajați
+                        </p>
+                      ) : (
+                        employees.map((emp) => (
+                          <div
+                            key={emp.id}
+                            className="flex items-center gap-3 p-2 rounded-md hover:bg-muted/50 cursor-pointer"
+                            onClick={() => toggleAssignee(emp.id)}
+                          >
+                            <Checkbox
+                              checked={formData.assigned_to.includes(emp.id)}
+                              onCheckedChange={() => toggleAssignee(emp.id)}
+                              data-testid={`assign-${emp.id}`}
+                            />
+                            <div className="flex-1">
+                              <p className="text-sm font-medium">{emp.name}</p>
+                              <p className="text-xs text-muted-foreground">{emp.email}</p>
+                            </div>
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  </ScrollArea>
+                </div>
+
                 <DialogFooter className="gap-2">
                   <Button type="button" variant="outline" onClick={() => setDialogOpen(false)}>
                     Anulează
@@ -377,17 +416,19 @@ export const Tasks = () => {
                   </Badge>
                 </div>
 
-                <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                <div className="space-y-2 text-sm text-muted-foreground">
                   {task.due_date && (
-                    <div className="flex items-center gap-1">
+                    <div className="flex items-center gap-2">
                       <Calendar className="h-4 w-4" />
                       {formatDate(task.due_date)}
                     </div>
                   )}
-                  {task.assignee && (
-                    <div className="flex items-center gap-1">
-                      <User className="h-4 w-4" />
-                      {task.assignee.name}
+                  {task.assignees?.length > 0 && (
+                    <div className="flex items-center gap-2">
+                      <Users className="h-4 w-4" />
+                      <span className="line-clamp-1">
+                        {task.assignees.map(a => a.name).join(', ')}
+                      </span>
                     </div>
                   )}
                 </div>
