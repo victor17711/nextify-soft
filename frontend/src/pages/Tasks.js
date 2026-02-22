@@ -158,15 +158,6 @@ export const Tasks = () => {
     });
   };
 
-  const toggleAssignee = (employeeId) => {
-    setFormData(prev => {
-      const newAssigned = prev.assigned_to.includes(employeeId)
-        ? prev.assigned_to.filter(id => id !== employeeId)
-        : [...prev.assigned_to, employeeId];
-      return { ...prev, assigned_to: newAssigned };
-    });
-  };
-
   const filteredTasks = tasks.filter(task => {
     const matchesSearch = task.title.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = filterStatus === 'all' || task.status === filterStatus;
