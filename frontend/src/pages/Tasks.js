@@ -80,7 +80,8 @@ export const Tasks = () => {
   const fetchEmployees = async () => {
     try {
       const response = await axios.get(`${API_URL}/api/users`);
-      setEmployees(response.data.filter(u => u.role === 'employee'));
+      // Include all users (employees and admins) for task assignment
+      setEmployees(response.data);
     } catch (error) {
       console.error('Error fetching employees:', error);
     }
@@ -298,7 +299,7 @@ export const Tasks = () => {
                     <div className="space-y-2">
                       {employees.length === 0 ? (
                         <p className="text-sm text-muted-foreground text-center py-4">
-                          Nu există angajați
+                          Nu există utilizatori
                         </p>
                       ) : (
                         employees.map((emp) => (
@@ -313,7 +314,12 @@ export const Tasks = () => {
                               data-testid={`assign-${emp.id}`}
                             />
                             <div className="flex-1">
-                              <p className="text-sm font-medium">{emp.name}</p>
+                              <div className="flex items-center gap-2">
+                                <p className="text-sm font-medium">{emp.name}</p>
+                                {emp.role === 'admin' && (
+                                  <Badge variant="outline" className="text-xs px-1.5 py-0">Admin</Badge>
+                                )}
+                              </div>
                               <p className="text-xs text-muted-foreground">{emp.email}</p>
                             </div>
                           </div>
