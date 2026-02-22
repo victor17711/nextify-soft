@@ -45,9 +45,9 @@ export const Dashboard = () => {
   };
 
   const formatCurrency = (amount) => {
-    return new Intl.NumberFormat('ro-RO', {
+    return new Intl.NumberFormat('ro-MD', {
       style: 'currency',
-      currency: 'RON',
+      currency: 'MDL',
       minimumFractionDigits: 0,
       maximumFractionDigits: 0
     }).format(amount);
