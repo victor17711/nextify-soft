@@ -303,14 +303,22 @@ export const Tasks = () => {
                         </p>
                       ) : (
                         employees.map((emp) => (
-                          <div
+                          <label
                             key={emp.id}
+                            htmlFor={`checkbox-${emp.id}`}
                             className="flex items-center gap-3 p-2 rounded-md hover:bg-muted/50 cursor-pointer"
-                            onClick={() => toggleAssignee(emp.id)}
                           >
                             <Checkbox
+                              id={`checkbox-${emp.id}`}
                               checked={formData.assigned_to.includes(emp.id)}
-                              onCheckedChange={() => toggleAssignee(emp.id)}
+                              onCheckedChange={(checked) => {
+                                setFormData(prev => {
+                                  const newAssigned = checked
+                                    ? [...prev.assigned_to, emp.id]
+                                    : prev.assigned_to.filter(id => id !== emp.id);
+                                  return { ...prev, assigned_to: newAssigned };
+                                });
+                              }}
                               data-testid={`assign-${emp.id}`}
                             />
                             <div className="flex-1">
@@ -322,7 +330,7 @@ export const Tasks = () => {
                               </div>
                               <p className="text-xs text-muted-foreground">{emp.email}</p>
                             </div>
-                          </div>
+                          </label>
                         ))
                       )}
                     </div>
