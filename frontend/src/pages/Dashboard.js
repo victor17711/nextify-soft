@@ -46,11 +46,9 @@ export const Dashboard = () => {
 
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat('ro-MD', {
-      style: 'currency',
-      currency: 'MDL',
       minimumFractionDigits: 0,
       maximumFractionDigits: 0
-    }).format(amount);
+    }).format(amount) + ' MDL';
   };
 
   // Prepare chart data

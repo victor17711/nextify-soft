@@ -161,11 +161,9 @@ export const Clients = () => {
 
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat('ro-MD', {
-      style: 'currency',
-      currency: 'MDL',
       minimumFractionDigits: 0,
       maximumFractionDigits: 0
-    }).format(amount);
+    }).format(amount) + ' MDL';
   };
 
   const totalBudget = filteredClients.reduce((sum, c) => sum + (c.budget || 0), 0);
