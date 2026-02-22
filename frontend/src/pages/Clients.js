@@ -235,7 +235,7 @@ export const Clients = () => {
                     <div className="space-y-2">
                       <Label htmlFor="monthly_fee" className="flex items-center gap-2">
                         <Repeat className="h-4 w-4 text-primary" />
-                        Sumă Lunară (RON)
+                        Sumă Lunară (MDL)
                       </Label>
                       <Input
                         id="monthly_fee"
@@ -250,7 +250,7 @@ export const Clients = () => {
                       </p>
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="budget">Buget Inițial/Total (RON)</Label>
+                      <Label htmlFor="budget">Buget Inițial/Total (MDL)</Label>
                       <Input
                         id="budget"
                         type="number"
@@ -267,7 +267,7 @@ export const Clients = () => {
                   </>
                 ) : (
                   <div className="space-y-2">
-                    <Label htmlFor="budget">Buget Proiect (RON)</Label>
+                    <Label htmlFor="budget">Buget Proiect (MDL)</Label>
                     <Input
                       id="budget"
                       type="number"
@@ -393,7 +393,7 @@ export const Clients = () => {
         <Card className="border-border/50 shadow-sm">
           <CardContent className="p-4 flex items-center gap-4">
             <div className="p-3 bg-blue-500/10 rounded-lg">
-              <span className="text-xl font-bold text-blue-500">RON</span>
+              <span className="text-xl font-bold text-blue-500">MDL</span>
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Buget Total</p>
