@@ -266,7 +266,7 @@ export const Tasks = () => {
                 
                 {/* Multiple Assignees */}
                 <div className="space-y-2">
-                  <Label>Atribuiți Angajați</Label>
+                  <Label>Atribuiți Utilizatori</Label>
                   {formData.assigned_to.length > 0 && (
                     <div className="flex flex-wrap gap-2 mb-2">
                       {formData.assigned_to.map(id => {
@@ -274,9 +274,15 @@ export const Tasks = () => {
                         return emp ? (
                           <Badge key={id} variant="secondary" className="pl-2 pr-1 py-1">
                             {emp.name}
+                            {emp.role === 'admin' && <span className="text-xs ml-1 opacity-70">(Admin)</span>}
                             <button
                               type="button"
-                              onClick={() => toggleAssignee(id)}
+                              onClick={() => {
+                                setFormData(prev => ({
+                                  ...prev,
+                                  assigned_to: prev.assigned_to.filter(uid => uid !== id)
+                                }));
+                              }}
                               className="ml-1 hover:bg-muted rounded-full p-0.5"
                             >
                               <X className="h-3 w-3" />
