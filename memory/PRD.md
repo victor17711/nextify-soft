@@ -11,11 +11,12 @@ Dashboard cu login pentru managementul angajaților:
 
 ## Core Requirements
 - Autentificare JWT cu roluri (admin/employee)
-- Management echipă cu avatare și procent din companie pentru admini
+- Management echipă cu avatare, procent din companie și specializare
 - Sarcini cu date de început/sfârșit, atribuire multiplă
 - Calendar vizual pentru sarcini
 - Rapoarte zilnice de progres
 - Documente organizate pe foldere (admin only)
+- Cheltuieli (admin only) - în dezvoltare
 - Profil utilizator cu actualizare avatar în timp real
 - Tema dark/light
 - Moneda: MDL
@@ -31,6 +32,8 @@ Dashboard cu login pentru managementul angajaților:
 - [x] Avatar afișat în sidebar pentru utilizatorul curent
 - [x] Câmp "% din Companie" pentru admini în pagina Echipa
 - [x] Actualizare în timp real a numelui/avatarului în sidebar după modificări
+- [x] Câmp "Specializare" cu 15 opțiuni colorate (Full Stack Developer, Web Designer, etc.)
+- [x] Tab "Cheltuieli" în sidebar (doar admini) - pagină "În proces de lucru"
 
 ### Previous Sessions
 - [x] Sistem autentificare JWT complet
@@ -46,8 +49,27 @@ Dashboard cu login pentru managementul angajaților:
 - [x] UI responsiv mobile
 - [x] Stiluri hover/select corectate
 
+## Position/Specialization Options
+| Position | Color |
+|----------|-------|
+| Full Stack Developer | Violet |
+| Frontend Developer | Blue |
+| Backend Developer | Indigo |
+| Mobile Developer | Cyan |
+| Web Designer | Pink |
+| UI/UX Designer | Fuchsia |
+| Graphic Designer | Rose |
+| SMM Specialist | Orange |
+| Content Creator | Amber |
+| SEO Specialist | Lime |
+| Project Manager | Emerald |
+| Business Developer | Teal |
+| Sales Manager | Green |
+| QA Engineer | Yellow |
+| DevOps Engineer | Red |
+
 ## Database Schema
-- **users:** id, name, email, phone, password_hash, role, avatar, company_share
+- **users:** id, name, email, phone, password_hash, role, avatar, company_share, position
 - **tasks:** id, title, description, assigned_to[], start_date, due_date, status, priority
 - **clients:** id, company_name, project_type, budget, monthly_fee, status, contact_*
 - **reports:** id, user_id, date, content
@@ -67,6 +89,7 @@ Dashboard cu login pentru managementul angajaților:
 - None currently
 
 ## Future Enhancements (P2)
+- Implementare completă pagină Cheltuieli
 - Export cod sursă ca .zip
 - Notificări push pentru sarcini
 - Statistici avansate pe dashboard
