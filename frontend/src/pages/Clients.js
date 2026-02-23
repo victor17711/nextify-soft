@@ -197,12 +197,12 @@ export const Clients = () => {
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="company_name">Nume Companie (SRL)</Label>
+                <Label htmlFor="company_name">Nume Companie (SRL) sau Persoana Fizică</Label>
                 <Input
                   id="company_name"
                   value={formData.company_name}
                   onChange={(e) => setFormData({ ...formData, company_name: e.target.value })}
-                  placeholder="SC Exemplu SRL"
+                  placeholder="SRL sau Nume & Prenume"
                   data-testid="client-company-input"
                   required
                 />
@@ -553,7 +553,7 @@ export const Clients = () => {
               {/* Content */}
               <div className="p-6 space-y-5">
                 {/* Financial Cards */}
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-4 mb-4">
                   <div className="p-4 rounded-xl bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950/50 dark:to-blue-900/30 border border-blue-200 dark:border-blue-800">
                     <p className="text-xs font-medium text-blue-600 dark:text-blue-400 uppercase tracking-wide">
                       {selectedClient.project_type === 'Mentenanță' ? 'Buget Inițial' : 'Buget Total'}
@@ -586,7 +586,7 @@ export const Clients = () => {
 
                 {/* Contact Info */}
                 {(selectedClient.contact_person || selectedClient.contact_email || selectedClient.contact_phone) && (
-                  <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+                  <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 mb-4">
                     <h4 className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-3">
                       Informații Contact
                     </h4>
