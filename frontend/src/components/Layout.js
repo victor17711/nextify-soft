@@ -56,13 +56,13 @@ const Sidebar = ({ mobile = false, onClose }) => {
         <img 
           src={logo} 
           alt="Logo" 
-          className="h-9 w-auto object-contain"
+          className="h-12 w-auto object-contain"
         />
-        <p className="text-xs text-slate-400 mt-1">Workspace</p>
+        <p className="text-l text-slate-400 mt-1">Workspace</p>
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 px-3 py-3 space-y-1">
+      <nav className="flex-1 px-12 py-3 space-y-1">
         {filteredNav.map((item) => {
           const isActive = location.pathname === item.href;
           return (
