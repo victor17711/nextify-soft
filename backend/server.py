@@ -69,7 +69,8 @@ class LoginResponse(BaseModel):
 class TaskBase(BaseModel):
     title: str
     description: Optional[str] = None
-    due_date: Optional[str] = None  # ISO date string
+    start_date: Optional[str] = None  # ISO date string - start date
+    due_date: Optional[str] = None  # ISO date string - end/deadline date
     priority: str = "medium"  # low, medium, high
     status: str = "pending"  # pending, in_progress, completed
     assigned_to: List[str] = []  # list of user ids
@@ -80,6 +81,7 @@ class TaskCreate(TaskBase):
 class TaskUpdate(BaseModel):
     title: Optional[str] = None
     description: Optional[str] = None
+    start_date: Optional[str] = None
     due_date: Optional[str] = None
     priority: Optional[str] = None
     status: Optional[str] = None
