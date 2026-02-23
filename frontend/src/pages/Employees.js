@@ -259,6 +259,27 @@ export const Employees = () => {
                   />
                 </div>
               )}
+              <div className="space-y-2">
+                <Label htmlFor="position">Specializare</Label>
+                <Select 
+                  value={formData.position} 
+                  onValueChange={(value) => setFormData({ ...formData, position: value })}
+                >
+                  <SelectTrigger data-testid="employee-position-select">
+                    <SelectValue placeholder="Selectează specializarea" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {POSITIONS.map((pos) => (
+                      <SelectItem key={pos.value} value={pos.value}>
+                        <div className="flex items-center gap-2">
+                          <span className={`w-2 h-2 rounded-full ${pos.color}`}></span>
+                          {pos.label}
+                        </div>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
               <DialogFooter className="gap-2">
                 <Button type="button" variant="outline" onClick={() => setDialogOpen(false)}>
                   Anulează
