@@ -8,6 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, Dialog
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components/ui/table';
 import { Badge } from '../components/ui/badge';
+import { Avatar, AvatarFallback, AvatarImage } from '../components/ui/avatar';
 import { toast } from 'sonner';
 import { Plus, Pencil, Trash2, UserPlus, Search } from 'lucide-react';
 
@@ -37,7 +38,7 @@ export const Employees = () => {
       const response = await axios.get(`${API_URL}/api/users`);
       setEmployees(response.data);
     } catch (error) {
-      toast.error('Eroare la încărcarea angajaților');
+      toast.error('Eroare la încărcarea echipei');
     } finally {
       setLoading(false);
     }
@@ -53,11 +54,11 @@ export const Employees = () => {
         if (!updateData.password) delete updateData.password;
         
         await axios.put(`${API_URL}/api/users/${selectedEmployee.id}`, updateData);
-        toast.success('Angajat actualizat cu succes!');
+        toast.success('Membru actualizat cu succes!');
       } else {
         // Create
         await axios.post(`${API_URL}/api/users`, formData);
-        toast.success('Angajat creat cu succes!');
+        toast.success('Membru adăugat cu succes!');
       }
       
       setDialogOpen(false);
@@ -84,7 +85,7 @@ export const Employees = () => {
   const handleDelete = async () => {
     try {
       await axios.delete(`${API_URL}/api/users/${selectedEmployee.id}`);
-      toast.success('Angajat șters cu succes!');
+      toast.success('Membru șters cu succes!');
       setDeleteDialogOpen(false);
       setSelectedEmployee(null);
       fetchEmployees();
@@ -114,8 +115,8 @@ export const Employees = () => {
     <div className="animate-fadeIn">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-3xl font-heading font-bold tracking-tight">Angajați</h1>
-          <p className="text-muted-foreground mt-1">Gestionează echipa ta</p>
+          <h1 className="text-3xl font-heading font-bold tracking-tight">Echipa</h1>
+          <p className="text-muted-foreground mt-1">Gestionează membrii echipei tale</p>
         </div>
         
         <Dialog open={dialogOpen} onOpenChange={(open) => {
@@ -125,13 +126,13 @@ export const Employees = () => {
           <DialogTrigger asChild>
             <Button className="active-scale" data-testid="add-employee-button">
               <UserPlus className="w-4 h-4 mr-2" />
-              Adaugă Angajat
+              Adaugă Membru
             </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-md">
             <DialogHeader>
               <DialogTitle className="font-heading">
-                {selectedEmployee ? 'Editează Angajat' : 'Angajat Nou'}
+                {selectedEmployee ? 'Editează Membru' : 'Membru Nou'}
               </DialogTitle>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -217,7 +218,7 @@ export const Employees = () => {
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
-              placeholder="Caută angajați..."
+              placeholder="Caută în echipă..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-10"
@@ -236,13 +237,13 @@ export const Employees = () => {
             </div>
           ) : filteredEmployees.length === 0 ? (
             <div className="p-8 text-center text-muted-foreground">
-              Niciun angajat găsit
+              Niciun membru găsit
             </div>
           ) : (
             <Table>
               <TableHeader>
                 <TableRow className="bg-muted/50">
-                  <TableHead className="font-medium">Nume</TableHead>
+                  <TableHead className="font-medium">Membru</TableHead>
                   <TableHead className="font-medium">Email</TableHead>
                   <TableHead className="font-medium">Telefon</TableHead>
                   <TableHead className="font-medium">Rol</TableHead>
@@ -252,7 +253,17 @@ export const Employees = () => {
               <TableBody>
                 {filteredEmployees.map((employee) => (
                   <TableRow key={employee.id} className="hover:bg-muted/50" data-testid={`employee-row-${employee.id}`}>
-                    <TableCell className="font-medium">{employee.name}</TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-3">
+                        <Avatar className="h-10 w-10">
+                          <AvatarImage src={employee.avatar} alt={employee.name} />
+                          <AvatarFallback className="bg-primary/10 text-primary font-medium">
+                            {employee.name?.charAt(0)?.toUpperCase()}
+                          </AvatarFallback>
+                        </Avatar>
+                        <span className="font-medium">{employee.name}</span>
+                      </div>
+                    </TableCell>
                     <TableCell>{employee.email}</TableCell>
                     <TableCell>{employee.phone || '-'}</TableCell>
                     <TableCell>
@@ -298,7 +309,7 @@ export const Employees = () => {
             <DialogTitle className="font-heading">Confirmare Ștergere</DialogTitle>
           </DialogHeader>
           <p className="text-muted-foreground">
-            Sigur doriți să ștergeți angajatul <strong>{selectedEmployee?.name}</strong>?
+            Sigur doriți să ștergeți membrul <strong>{selectedEmployee?.name}</strong>?
             Această acțiune nu poate fi anulată.
           </p>
           <DialogFooter className="gap-2">
