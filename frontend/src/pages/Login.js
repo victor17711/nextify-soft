@@ -95,15 +95,7 @@ export const Login = () => {
             </Button>
           </div>
 
-          {/* Mobile Logo */}
-          <div className="lg:hidden text-center mb-8">
-            <h1 className="text-3xl font-heading font-bold tracking-tight text-foreground">
-              Workforce Portal
-            </h1>
-            <p className="text-muted-foreground mt-2">
-              Panou de Control
-            </p>
-          </div>
+          {/* Mobile Logo - hidden, showing only form */}
 
 <div className="text-center mb-6">
   <h2 className="text-3xl font-semibold tracking-tight">

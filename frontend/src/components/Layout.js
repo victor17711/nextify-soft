@@ -165,7 +165,7 @@ export const Layout = ({ children }) => {
           </SheetContent>
         </Sheet>
 
-        <h1 className="text-lg font-heading font-bold">Workforce Portal</h1>
+        <img src={logo} alt="Logo" className="h-8" />
 
         <Button variant="ghost" size="icon" onClick={toggleTheme} data-testid="mobile-theme-toggle">
           {theme === 'light' ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
