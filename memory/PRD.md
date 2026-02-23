@@ -40,6 +40,7 @@ Dashboard cu login pentru managementul angajaților:
 - [x] Logo static și mai mare, "Workspace" dedesubt
 - [x] Tab-uri sidebar mărite (icoane 5x5, spațiere mai bună)
 - [x] Notițe: afișează numele creatorului pe fiecare notiță
+- [x] Popup Clienți redesign complet: header gradient, carduri financiare colorate, contact cu linkuri, notițe evidențiate
 
 ### Previous Sessions
 - [x] Sistem autentificare JWT complet
