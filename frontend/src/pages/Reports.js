@@ -87,6 +87,8 @@ export const Reports = () => {
       });
       toast.success('Raport salvat cu succes!');
       fetchReports();
+      // Navigate to previous day after saving
+      navigateDate(-1);
     } catch (error) {
       toast.error('Eroare la salvarea raportului');
     } finally {
