@@ -217,6 +217,22 @@ export const Employees = () => {
                   </SelectContent>
                 </Select>
               </div>
+              {formData.role === 'admin' && (
+                <div className="space-y-2">
+                  <Label htmlFor="company_share">% din Companie</Label>
+                  <Input
+                    id="company_share"
+                    type="number"
+                    min="0"
+                    max="100"
+                    step="0.1"
+                    value={formData.company_share}
+                    onChange={(e) => setFormData({ ...formData, company_share: e.target.value })}
+                    placeholder="ex: 50"
+                    data-testid="employee-share-input"
+                  />
+                </div>
+              )}
               <DialogFooter className="gap-2">
                 <Button type="button" variant="outline" onClick={() => setDialogOpen(false)}>
                   Anulează
