@@ -306,7 +306,9 @@ async def create_user(request: UserCreate, current_user: dict = Depends(require_
         email=request.email,
         name=request.name,
         phone=request.phone,
-        role=request.role
+        role=request.role,
+        company_share=request.company_share if request.role == 'admin' else None,
+        position=request.position
     )
     
     doc = user.model_dump()
