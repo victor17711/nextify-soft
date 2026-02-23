@@ -522,100 +522,135 @@ export const Clients = () => {
         </CardContent>
       </Card>
 
-      {/* View Client Dialog */}
+      {/* View Client Dialog - Improved Design */}
       <Dialog open={viewDialogOpen} onOpenChange={setViewDialogOpen}>
-        <DialogContent className="sm:max-w-lg">
-          <DialogHeader>
-            <DialogTitle className="font-heading flex items-center gap-2">
-              <Building2 className="h-5 w-5" />
-              {selectedClient?.company_name}
-            </DialogTitle>
-          </DialogHeader>
+        <DialogContent className="sm:max-w-xl p-0 overflow-hidden">
           {selectedClient && (
-            <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <p className="text-sm text-muted-foreground">Tip Proiect</p>
-                  <p className="font-medium flex items-center gap-2">
-                    {selectedClient.project_type}
-                    {selectedClient.project_type === 'Mentenanță' && (
-                      <Repeat className="h-4 w-4 text-emerald-500" />
-                    )}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">Status</p>
-                  <Badge className={`${statusColors[selectedClient.status]} text-white mt-1`}>
+            <>
+              {/* Header with gradient */}
+              <div className="bg-gradient-to-r from-primary to-emerald-500 px-6 py-5 text-white">
+                <div className="flex items-start justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2.5 bg-white/20 rounded-xl backdrop-blur-sm">
+                      <Building2 className="h-6 w-6" />
+                    </div>
+                    <div>
+                      <h2 className="text-xl font-heading font-bold">{selectedClient.company_name}</h2>
+                      <p className="text-white/80 text-sm flex items-center gap-2 mt-0.5">
+                        {selectedClient.project_type}
+                        {selectedClient.project_type === 'Mentenanță' && (
+                          <Repeat className="h-3.5 w-3.5" />
+                        )}
+                      </p>
+                    </div>
+                  </div>
+                  <Badge className={`${statusColors[selectedClient.status]} text-white border-0 shadow-sm`}>
                     {statusLabels[selectedClient.status]}
                   </Badge>
                 </div>
               </div>
-              
-              {/* Financial Info */}
-              <div className="p-4 rounded-lg bg-muted/50 border border-border/50 space-y-3">
-                <h4 className="text-sm font-medium">Informații Financiare</h4>
+
+              {/* Content */}
+              <div className="p-6 space-y-5">
+                {/* Financial Cards */}
                 <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <p className="text-sm text-muted-foreground">
-                      {selectedClient.project_type === 'Mentenanță' ? 'Buget Inițial' : 'Buget Proiect'}
+                  <div className="p-4 rounded-xl bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950/50 dark:to-blue-900/30 border border-blue-200 dark:border-blue-800">
+                    <p className="text-xs font-medium text-blue-600 dark:text-blue-400 uppercase tracking-wide">
+                      {selectedClient.project_type === 'Mentenanță' ? 'Buget Inițial' : 'Buget Total'}
                     </p>
-                    <p className="text-lg font-bold tabular-nums">{formatCurrency(selectedClient.budget)}</p>
+                    <p className="text-2xl font-heading font-bold text-blue-700 dark:text-blue-300 mt-1 tabular-nums">
+                      {formatCurrency(selectedClient.budget)}
+                    </p>
                   </div>
-                  {selectedClient.monthly_fee && (
-                    <div>
-                      <p className="text-sm text-muted-foreground">Sumă Lunară</p>
-                      <p className="text-lg font-bold tabular-nums text-emerald-600 dark:text-emerald-400">
-                        {formatCurrency(selectedClient.monthly_fee)}/lună
+                  {selectedClient.monthly_fee ? (
+                    <div className="p-4 rounded-xl bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-emerald-950/50 dark:to-emerald-900/30 border border-emerald-200 dark:border-emerald-800">
+                      <p className="text-xs font-medium text-emerald-600 dark:text-emerald-400 uppercase tracking-wide flex items-center gap-1">
+                        <Repeat className="h-3 w-3" />
+                        Lunar Recurent
+                      </p>
+                      <p className="text-2xl font-heading font-bold text-emerald-700 dark:text-emerald-300 mt-1 tabular-nums">
+                        {formatCurrency(selectedClient.monthly_fee)}
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+                      <p className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide">
+                        Plată Unică
+                      </p>
+                      <p className="text-sm text-slate-600 dark:text-slate-400 mt-2">
+                        Proiect fără taxe recurente
                       </p>
                     </div>
                   )}
                 </div>
+
+                {/* Contact Info */}
+                {(selectedClient.contact_person || selectedClient.contact_email || selectedClient.contact_phone) && (
+                  <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+                    <h4 className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-3">
+                      Informații Contact
+                    </h4>
+                    <div className="space-y-2.5">
+                      {selectedClient.contact_person && (
+                        <div className="flex items-center gap-3">
+                          <div className="p-1.5 rounded-lg bg-slate-200 dark:bg-slate-700">
+                            <Building2 className="h-4 w-4 text-slate-600 dark:text-slate-300" />
+                          </div>
+                          <span className="font-medium">{selectedClient.contact_person}</span>
+                        </div>
+                      )}
+                      {selectedClient.contact_email && (
+                        <div className="flex items-center gap-3">
+                          <div className="p-1.5 rounded-lg bg-slate-200 dark:bg-slate-700">
+                            <Mail className="h-4 w-4 text-slate-600 dark:text-slate-300" />
+                          </div>
+                          <a href={`mailto:${selectedClient.contact_email}`} className="text-primary hover:underline">
+                            {selectedClient.contact_email}
+                          </a>
+                        </div>
+                      )}
+                      {selectedClient.contact_phone && (
+                        <div className="flex items-center gap-3">
+                          <div className="p-1.5 rounded-lg bg-slate-200 dark:bg-slate-700">
+                            <Phone className="h-4 w-4 text-slate-600 dark:text-slate-300" />
+                          </div>
+                          <a href={`tel:${selectedClient.contact_phone}`} className="text-primary hover:underline">
+                            {selectedClient.contact_phone}
+                          </a>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {/* Notes */}
+                {selectedClient.notes && (
+                  <div className="p-4 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800">
+                    <h4 className="text-xs font-medium text-amber-600 dark:text-amber-400 uppercase tracking-wide mb-2">
+                      Notițe
+                    </h4>
+                    <p className="text-sm text-amber-900 dark:text-amber-200 whitespace-pre-wrap leading-relaxed">
+                      {selectedClient.notes}
+                    </p>
+                  </div>
+                )}
               </div>
 
-              {(selectedClient.contact_person || selectedClient.contact_email || selectedClient.contact_phone) && (
-                <div className="border-t border-border pt-4">
-                  <h4 className="text-sm font-medium mb-3">Informații Contact</h4>
-                  <div className="space-y-2">
-                    {selectedClient.contact_person && (
-                      <p className="text-sm">{selectedClient.contact_person}</p>
-                    )}
-                    {selectedClient.contact_email && (
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <Mail className="h-4 w-4" />
-                        {selectedClient.contact_email}
-                      </div>
-                    )}
-                    {selectedClient.contact_phone && (
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <Phone className="h-4 w-4" />
-                        {selectedClient.contact_phone}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )}
-              {selectedClient.notes && (
-                <div className="border-t border-border pt-4">
-                  <h4 className="text-sm font-medium mb-2">Notițe</h4>
-                  <p className="text-sm text-muted-foreground whitespace-pre-wrap">
-                    {selectedClient.notes}
-                  </p>
-                </div>
-              )}
-            </div>
+              {/* Footer Actions */}
+              <div className="px-6 py-4 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700 flex justify-end gap-3">
+                <Button variant="outline" onClick={() => setViewDialogOpen(false)}>
+                  Închide
+                </Button>
+                <Button onClick={() => {
+                  setViewDialogOpen(false);
+                  handleEdit(selectedClient);
+                }} data-testid="edit-from-view-button" className="gap-2">
+                  <Pencil className="h-4 w-4" />
+                  Editează
+                </Button>
+              </div>
+            </>
           )}
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setViewDialogOpen(false)}>
-              Închide
-            </Button>
-            <Button onClick={() => {
-              setViewDialogOpen(false);
-              handleEdit(selectedClient);
-            }} data-testid="edit-from-view-button">
-              <Pencil className="h-4 w-4 mr-2" />
-              Editează
-            </Button>
-          </DialogFooter>
         </DialogContent>
       </Dialog>
 
