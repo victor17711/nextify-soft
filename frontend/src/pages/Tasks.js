@@ -128,6 +128,7 @@ export const Tasks = () => {
     setFormData({
       title: task.title,
       description: task.description || '',
+      start_date: task.start_date || '',
       due_date: task.due_date || '',
       priority: task.priority,
       status: task.status,
@@ -153,6 +154,7 @@ export const Tasks = () => {
     setFormData({
       title: '',
       description: '',
+      start_date: '',
       due_date: '',
       priority: 'medium',
       status: 'pending',
