@@ -37,6 +37,9 @@ Dashboard cu login pentru managementul angajaților:
 - [x] Sortare echipă: Admini primii, apoi Angajați (alfabetic)
 - [x] Meniu sidebar compact (fără scroll)
 - [x] Fix: % Companie se salvează și afișează corect la crearea utilizatorului
+- [x] Logo static și mai mare, "Workspace" dedesubt
+- [x] Tab-uri sidebar mărite (icoane 5x5, spațiere mai bună)
+- [x] Notițe: afișează numele creatorului pe fiecare notiță
 
 ### Previous Sessions
 - [x] Sistem autentificare JWT complet
