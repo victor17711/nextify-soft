@@ -118,7 +118,8 @@ export const Employees = () => {
       phone: employee.phone || '',
       password: '',
       role: employee.role,
-      company_share: employee.company_share || ''
+      company_share: employee.company_share || '',
+      position: employee.position || ''
     });
     setDialogOpen(true);
   };
@@ -144,7 +145,8 @@ export const Employees = () => {
       phone: '',
       password: '',
       role: 'employee',
-      company_share: ''
+      company_share: '',
+      position: ''
     });
   };
 
