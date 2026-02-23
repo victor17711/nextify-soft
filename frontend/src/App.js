@@ -7,9 +7,11 @@ import { Login } from "./pages/Login";
 import { Dashboard } from "./pages/Dashboard";
 import { Employees } from "./pages/Employees";
 import { Tasks } from "./pages/Tasks";
+import { Reports } from "./pages/Reports";
 import { CalendarPage } from "./pages/CalendarPage";
 import { Notes } from "./pages/Notes";
 import { Clients } from "./pages/Clients";
+import { Documents } from "./pages/Documents";
 import "./App.css";
 
 // Protected Route Component
