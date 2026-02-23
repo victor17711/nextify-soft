@@ -4,7 +4,7 @@ import json
 from datetime import datetime
 
 class WorkforceFeatureTester:
-    def __init__(self, base_url="https://workforce-portal-23.preview.emergentagent.com"):
+    def __init__(self, base_url="https://team-dash-7.preview.emergentagent.com"):
         self.base_url = base_url
         self.admin_token = None
         self.employee_token = None
