@@ -281,6 +281,7 @@ export const Employees = () => {
                   <TableHead className="font-medium">Email</TableHead>
                   <TableHead className="font-medium">Telefon</TableHead>
                   <TableHead className="font-medium">Rol</TableHead>
+                  <TableHead className="font-medium">% Companie</TableHead>
                   <TableHead className="font-medium text-right">Acțiuni</TableHead>
                 </TableRow>
               </TableHeader>
@@ -304,6 +305,11 @@ export const Employees = () => {
                       <Badge variant={employee.role === 'admin' ? 'default' : 'secondary'}>
                         {employee.role === 'admin' ? 'Admin' : 'Angajat'}
                       </Badge>
+                    </TableCell>
+                    <TableCell>
+                      {employee.role === 'admin' && employee.company_share != null 
+                        ? `${employee.company_share}%` 
+                        : '-'}
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-2">
