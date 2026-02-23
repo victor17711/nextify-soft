@@ -93,6 +93,7 @@ export const Tasks = () => {
     
     try {
       const submitData = { ...formData };
+      if (!submitData.start_date) delete submitData.start_date;
       if (!submitData.due_date) delete submitData.due_date;
       
       if (selectedTask) {
