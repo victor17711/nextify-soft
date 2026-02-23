@@ -53,6 +53,7 @@ export const Tasks = () => {
   const [formData, setFormData] = useState({
     title: '',
     description: '',
+    start_date: '',
     due_date: '',
     priority: 'medium',
     status: 'pending',
