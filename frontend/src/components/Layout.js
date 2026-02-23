@@ -62,7 +62,7 @@ const Sidebar = ({ mobile = false, onClose }) => {
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 px-12 py-3 space-y-1">
+      <nav className="flex-1 px-3 py-3 space-y-6">
         {filteredNav.map((item) => {
           const isActive = location.pathname === item.href;
           return (
