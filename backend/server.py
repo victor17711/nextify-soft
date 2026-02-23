@@ -143,6 +143,55 @@ class Client(ClientBase):
     created_by: str = ""
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
+# ============== FOLDER & DOCUMENT MODELS ==============
+
+class FolderBase(BaseModel):
+    name: str
+    client_id: str  # Associated with a client
+
+class FolderCreate(FolderBase):
+    pass
+
+class Folder(FolderBase):
+    model_config = ConfigDict(extra="ignore")
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    created_by: str = ""
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+class DocumentBase(BaseModel):
+    name: str
+    file_data: str  # Base64 encoded file data
+    file_type: str  # mime type
+    folder_id: str
+
+class DocumentCreate(DocumentBase):
+    pass
+
+class Document(DocumentBase):
+    model_config = ConfigDict(extra="ignore")
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    uploaded_by: str = ""
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+# ============== REPORT MODELS ==============
+
+class ReportBase(BaseModel):
+    date: str  # ISO date string YYYY-MM-DD
+    content: str
+
+class ReportCreate(ReportBase):
+    pass
+
+class ReportUpdate(BaseModel):
+    content: Optional[str] = None
+
+class Report(ReportBase):
+    model_config = ConfigDict(extra="ignore")
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    user_id: str = ""
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
 # ============== HELPERS ==============
 
 def hash_password(password: str) -> str:
