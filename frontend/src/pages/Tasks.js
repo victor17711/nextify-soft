@@ -225,6 +225,16 @@ export const Tasks = () => {
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
+                    <Label htmlFor="start_date">Data Început</Label>
+                    <Input
+                      id="start_date"
+                      type="date"
+                      value={formData.start_date}
+                      onChange={(e) => setFormData({ ...formData, start_date: e.target.value })}
+                      data-testid="task-start-date-input"
+                    />
+                  </div>
+                  <div className="space-y-2">
                     <Label htmlFor="due_date">Data Limită</Label>
                     <Input
                       id="due_date"
@@ -234,6 +244,8 @@ export const Tasks = () => {
                       data-testid="task-due-date-input"
                     />
                   </div>
+                </div>
+                <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="priority">Prioritate</Label>
                     <Select 
