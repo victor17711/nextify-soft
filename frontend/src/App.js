@@ -104,6 +104,15 @@ function AppRoutes() {
       />
 
       <Route
+        path="/reports"
+        element={
+          <ProtectedRoute>
+            <Reports />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
         path="/calendar"
         element={
           <ProtectedRoute>
@@ -126,6 +135,15 @@ function AppRoutes() {
         element={
           <ProtectedRoute adminOnly>
             <Clients />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/documents"
+        element={
+          <ProtectedRoute adminOnly>
+            <Documents />
           </ProtectedRoute>
         }
       />
