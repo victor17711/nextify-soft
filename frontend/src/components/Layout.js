@@ -62,7 +62,7 @@ const Sidebar = ({ mobile = false, onClose }) => {
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 px-3 py-3 space-y-6">
+      <nav className="flex-1 px-3 py-3 space-y-1">
         {filteredNav.map((item) => {
           const isActive = location.pathname === item.href;
           return (
@@ -78,7 +78,7 @@ const Sidebar = ({ mobile = false, onClose }) => {
               }`}
             >
               <item.icon className="w-5 h-5" />
-              <span className="text-sm font-medium">{item.name}</span>
+              <span className="text-l font-medium">{item.name}</span>
             </Link>
           );
         })}

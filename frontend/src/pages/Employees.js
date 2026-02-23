@@ -252,7 +252,7 @@ export const Employees = () => {
                 </Select>
               </div>
               {formData.role === 'admin' && (
-                <div className="space-y-2">
+                <div className="space-y-2 mt-3">
                   <Label htmlFor="company_share">% din Companie</Label>
                   <Input
                     id="company_share"
