@@ -12,6 +12,7 @@ import { CalendarPage } from "./pages/CalendarPage";
 import { Notes } from "./pages/Notes";
 import { Clients } from "./pages/Clients";
 import { Documents } from "./pages/Documents";
+import { Expenses } from "./pages/Expenses";
 import { Profile } from "./pages/Profile";
 import "./App.css";
 
@@ -145,6 +146,15 @@ function AppRoutes() {
         element={
           <ProtectedRoute adminOnly>
             <Documents />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/expenses"
+        element={
+          <ProtectedRoute adminOnly>
+            <Expenses />
           </ProtectedRoute>
         }
       />
