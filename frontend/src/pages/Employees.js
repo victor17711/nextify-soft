@@ -347,6 +347,15 @@ export const Employees = () => {
                         <span className="font-medium">{employee.name}</span>
                       </div>
                     </TableCell>
+                    <TableCell>
+                      {employee.position ? (
+                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium text-white ${getPositionInfo(employee.position)?.color || 'bg-gray-500'}`}>
+                          {getPositionInfo(employee.position)?.label || employee.position}
+                        </span>
+                      ) : (
+                        <span className="text-muted-foreground">-</span>
+                      )}
+                    </TableCell>
                     <TableCell>{employee.email}</TableCell>
                     <TableCell>{employee.phone || '-'}</TableCell>
                     <TableCell>
