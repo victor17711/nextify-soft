@@ -314,12 +314,20 @@ async def create_user(request: UserCreate, current_user: dict = Depends(require_
     return {"message": "Utilizator creat cu succes", "user_id": user.id}
 
 @api_router.put("/users/{user_id}", response_model=dict)
-async def update_user(user_id: str, request: UserUpdate, current_user: dict = Depends(require_admin)):
+async def update_user(user_id: str, request: UserUpdate, current_user: dict = Depends(get_current_user)):
+    # Allow users to update their own profile, or admin to update anyone
+    if current_user["role"] != "admin" and current_user["user_id"] != user_id:
+        raise HTTPException(status_code=403, detail="Acces interzis")
+    
     user = await db.users.find_one({"id": user_id})
     if not user:
         raise HTTPException(status_code=404, detail="Utilizator negăsit")
     
     update_data = {k: v for k, v in request.model_dump().items() if v is not None}
+    
+    # Only admin can change role
+    if "role" in update_data and current_user["role"] != "admin":
+        del update_data["role"]
     
     if "password" in update_data:
         update_data["password_hash"] = hash_password(update_data.pop("password"))
