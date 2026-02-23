@@ -26,7 +26,8 @@ export const Employees = () => {
     email: '',
     phone: '',
     password: '',
-    role: 'employee'
+    role: 'employee',
+    company_share: ''
   });
 
   useEffect(() => {
@@ -52,12 +53,27 @@ export const Employees = () => {
         // Update
         const updateData = { ...formData };
         if (!updateData.password) delete updateData.password;
+        if (updateData.role !== 'admin') {
+          updateData.company_share = null;
+        } else if (updateData.company_share === '') {
+          updateData.company_share = null;
+        } else {
+          updateData.company_share = parseFloat(updateData.company_share);
+        }
         
         await axios.put(`${API_URL}/api/users/${selectedEmployee.id}`, updateData);
         toast.success('Membru actualizat cu succes!');
       } else {
         // Create
-        await axios.post(`${API_URL}/api/users`, formData);
+        const createData = { ...formData };
+        if (createData.role !== 'admin') {
+          delete createData.company_share;
+        } else if (createData.company_share === '') {
+          delete createData.company_share;
+        } else {
+          createData.company_share = parseFloat(createData.company_share);
+        }
+        await axios.post(`${API_URL}/api/users`, createData);
         toast.success('Membru adăugat cu succes!');
       }
       
@@ -77,7 +93,8 @@ export const Employees = () => {
       email: employee.email,
       phone: employee.phone || '',
       password: '',
-      role: employee.role
+      role: employee.role,
+      company_share: employee.company_share || ''
     });
     setDialogOpen(true);
   };
@@ -102,7 +119,8 @@ export const Employees = () => {
       email: '',
       phone: '',
       password: '',
-      role: 'employee'
+      role: 'employee',
+      company_share: ''
     });
   };
 
