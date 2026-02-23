@@ -543,6 +543,207 @@ async def delete_client(client_id: str, current_user: dict = Depends(require_adm
     
     return {"message": "Client șters cu succes"}
 
+# ============== FOLDER ROUTES ==============
+
+@api_router.get("/folders", response_model=List[dict])
+async def get_folders(client_id: Optional[str] = None, current_user: dict = Depends(require_admin)):
+    query = {}
+    if client_id:
+        query["client_id"] = client_id
+    folders = await db.folders.find(query, {"_id": 0}).to_list(1000)
+    
+    # Add client info to each folder
+    for folder in folders:
+        client = await db.clients.find_one({"id": folder["client_id"]}, {"_id": 0, "company_name": 1})
+        folder["client"] = client
+        # Count documents in folder
+        doc_count = await db.documents.count_documents({"folder_id": folder["id"]})
+        folder["document_count"] = doc_count
+    
+    return folders
+
+@api_router.post("/folders", response_model=dict)
+async def create_folder(request: FolderCreate, current_user: dict = Depends(require_admin)):
+    # Check if client exists
+    client = await db.clients.find_one({"id": request.client_id})
+    if not client:
+        raise HTTPException(status_code=404, detail="Client negăsit")
+    
+    folder = Folder(
+        name=request.name,
+        client_id=request.client_id,
+        created_by=current_user["user_id"]
+    )
+    
+    doc = folder.model_dump()
+    doc["created_at"] = doc["created_at"].isoformat()
+    
+    await db.folders.insert_one(doc)
+    
+    return {"message": "Folder creat cu succes", "folder_id": folder.id}
+
+@api_router.delete("/folders/{folder_id}", response_model=dict)
+async def delete_folder(folder_id: str, current_user: dict = Depends(require_admin)):
+    # Delete all documents in folder first
+    await db.documents.delete_many({"folder_id": folder_id})
+    
+    result = await db.folders.delete_one({"id": folder_id})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Folder negăsit")
+    
+    return {"message": "Folder șters cu succes"}
+
+# ============== DOCUMENT ROUTES ==============
+
+@api_router.get("/documents", response_model=List[dict])
+async def get_documents(folder_id: Optional[str] = None, current_user: dict = Depends(require_admin)):
+    query = {}
+    if folder_id:
+        query["folder_id"] = folder_id
+    # Don't return file_data in list view (too large)
+    documents = await db.documents.find(query, {"_id": 0, "file_data": 0}).to_list(1000)
+    return documents
+
+@api_router.get("/documents/{document_id}", response_model=dict)
+async def get_document(document_id: str, current_user: dict = Depends(require_admin)):
+    document = await db.documents.find_one({"id": document_id}, {"_id": 0})
+    if not document:
+        raise HTTPException(status_code=404, detail="Document negăsit")
+    return document
+
+@api_router.post("/documents", response_model=dict)
+async def create_document(request: DocumentCreate, current_user: dict = Depends(require_admin)):
+    # Check if folder exists
+    folder = await db.folders.find_one({"id": request.folder_id})
+    if not folder:
+        raise HTTPException(status_code=404, detail="Folder negăsit")
+    
+    document = Document(
+        name=request.name,
+        file_data=request.file_data,
+        file_type=request.file_type,
+        folder_id=request.folder_id,
+        uploaded_by=current_user["user_id"]
+    )
+    
+    doc = document.model_dump()
+    doc["created_at"] = doc["created_at"].isoformat()
+    
+    await db.documents.insert_one(doc)
+    
+    return {"message": "Document încărcat cu succes", "document_id": document.id}
+
+@api_router.delete("/documents/{document_id}", response_model=dict)
+async def delete_document(document_id: str, current_user: dict = Depends(require_admin)):
+    result = await db.documents.delete_one({"id": document_id})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Document negăsit")
+    
+    return {"message": "Document șters cu succes"}
+
+# ============== REPORT ROUTES ==============
+
+@api_router.get("/reports", response_model=List[dict])
+async def get_reports(user_id: Optional[str] = None, date: Optional[str] = None, current_user: dict = Depends(get_current_user)):
+    query = {}
+    
+    if current_user["role"] == "admin":
+        # Admin can filter by user_id
+        if user_id:
+            query["user_id"] = user_id
+    else:
+        # Employees can only see their own reports
+        query["user_id"] = current_user["user_id"]
+    
+    if date:
+        query["date"] = date
+    
+    reports = await db.reports.find(query, {"_id": 0}).sort("date", -1).to_list(1000)
+    
+    # Add user info
+    for report in reports:
+        user = await db.users.find_one({"id": report["user_id"]}, {"_id": 0, "password_hash": 0})
+        report["user"] = user
+    
+    return reports
+
+@api_router.get("/reports/{report_id}", response_model=dict)
+async def get_report(report_id: str, current_user: dict = Depends(get_current_user)):
+    report = await db.reports.find_one({"id": report_id}, {"_id": 0})
+    if not report:
+        raise HTTPException(status_code=404, detail="Raport negăsit")
+    
+    # Check access
+    if current_user["role"] != "admin" and report["user_id"] != current_user["user_id"]:
+        raise HTTPException(status_code=403, detail="Acces interzis")
+    
+    return report
+
+@api_router.post("/reports", response_model=dict)
+async def create_report(request: ReportCreate, current_user: dict = Depends(get_current_user)):
+    # Check if report for this date already exists
+    existing = await db.reports.find_one({
+        "user_id": current_user["user_id"],
+        "date": request.date
+    })
+    
+    if existing:
+        # Update existing report
+        await db.reports.update_one(
+            {"id": existing["id"]},
+            {"$set": {
+                "content": request.content,
+                "updated_at": datetime.now(timezone.utc).isoformat()
+            }}
+        )
+        return {"message": "Raport actualizat cu succes", "report_id": existing["id"]}
+    
+    report = Report(
+        date=request.date,
+        content=request.content,
+        user_id=current_user["user_id"]
+    )
+    
+    doc = report.model_dump()
+    doc["created_at"] = doc["created_at"].isoformat()
+    doc["updated_at"] = doc["updated_at"].isoformat()
+    
+    await db.reports.insert_one(doc)
+    
+    return {"message": "Raport creat cu succes", "report_id": report.id}
+
+@api_router.put("/reports/{report_id}", response_model=dict)
+async def update_report(report_id: str, request: ReportUpdate, current_user: dict = Depends(get_current_user)):
+    report = await db.reports.find_one({"id": report_id})
+    if not report:
+        raise HTTPException(status_code=404, detail="Raport negăsit")
+    
+    # Check access - only owner can update
+    if report["user_id"] != current_user["user_id"] and current_user["role"] != "admin":
+        raise HTTPException(status_code=403, detail="Acces interzis")
+    
+    update_data = {"updated_at": datetime.now(timezone.utc).isoformat()}
+    if request.content is not None:
+        update_data["content"] = request.content
+    
+    await db.reports.update_one({"id": report_id}, {"$set": update_data})
+    
+    return {"message": "Raport actualizat cu succes"}
+
+@api_router.delete("/reports/{report_id}", response_model=dict)
+async def delete_report(report_id: str, current_user: dict = Depends(get_current_user)):
+    report = await db.reports.find_one({"id": report_id})
+    if not report:
+        raise HTTPException(status_code=404, detail="Raport negăsit")
+    
+    # Check access - only owner or admin can delete
+    if report["user_id"] != current_user["user_id"] and current_user["role"] != "admin":
+        raise HTTPException(status_code=403, detail="Acces interzis")
+    
+    await db.reports.delete_one({"id": report_id})
+    
+    return {"message": "Raport șters cu succes"}
+
 # ============== DASHBOARD STATS ==============
 
 @api_router.get("/dashboard/stats", response_model=dict)
