@@ -25,7 +25,7 @@ import {
 
 const navigation = [
   { name: 'Panou de Control', href: '/dashboard', icon: LayoutDashboard, adminOnly: false },
-  { name: 'Angajați', href: '/employees', icon: Users, adminOnly: true },
+  { name: 'Echipa', href: '/employees', icon: Users, adminOnly: true },
   { name: 'Sarcini', href: '/tasks', icon: CheckSquare, adminOnly: false },
   { name: 'Rapoarte', href: '/reports', icon: FileText, adminOnly: false },
   { name: 'Calendar', href: '/calendar', icon: CalendarDays, adminOnly: false },
