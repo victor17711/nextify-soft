@@ -12,6 +12,7 @@ import { CalendarPage } from "./pages/CalendarPage";
 import { Notes } from "./pages/Notes";
 import { Clients } from "./pages/Clients";
 import { Documents } from "./pages/Documents";
+import { Profile } from "./pages/Profile";
 import "./App.css";
 
 // Protected Route Component
