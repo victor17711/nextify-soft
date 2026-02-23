@@ -447,6 +447,15 @@ async def get_notes(current_user: dict = Depends(get_current_user)):
     else:
         # Employees see notes created by them or shared (created_by admin)
         notes = await db.notes.find({}, {"_id": 0}).to_list(1000)
+    
+    # Add creator name to each note
+    for note in notes:
+        if note.get("created_by"):
+            creator = await db.users.find_one({"id": note["created_by"]}, {"_id": 0, "name": 1})
+            note["creator_name"] = creator["name"] if creator else "Necunoscut"
+        else:
+            note["creator_name"] = "Necunoscut"
+    
     return notes
 
 @api_router.get("/notes/{note_id}", response_model=dict)
