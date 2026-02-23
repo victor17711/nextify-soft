@@ -339,7 +339,7 @@ export const Dashboard = () => {
                       {stats.recent_tasks.map((task) => (
                         <div 
                           key={task.id} 
-                          className="p-3 rounded-lg border border-border/50 hover:bg-muted/50 transition-colors"
+                          className="p-3 rounded-lg border border-border/50 hover:bg-muted/50 transition-colors mb-2"
                         >
                           <div className="flex items-start justify-between gap-2 mb-2">
                             <p className="font-medium line-clamp-1">{task.title}</p>
