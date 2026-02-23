@@ -34,6 +34,9 @@ Dashboard cu login pentru managementul angajaților:
 - [x] Actualizare în timp real a numelui/avatarului în sidebar după modificări
 - [x] Câmp "Specializare" cu 15 opțiuni colorate (Full Stack Developer, Web Designer, etc.)
 - [x] Tab "Cheltuieli" în sidebar (doar admini) - pagină "În proces de lucru"
+- [x] Sortare echipă: Admini primii, apoi Angajați (alfabetic)
+- [x] Meniu sidebar compact (fără scroll)
+- [x] Fix: % Companie se salvează și afișează corect la crearea utilizatorului
 
 ### Previous Sessions
 - [x] Sistem autentificare JWT complet
