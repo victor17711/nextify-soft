@@ -43,6 +43,7 @@ class UserBase(BaseModel):
     phone: Optional[str] = None
     role: str = "employee"  # "admin" or "employee"
     company_share: Optional[float] = None  # % din companie (doar pentru admini)
+    position: Optional[str] = None  # Job position/specialty
 
 class UserCreate(UserBase):
     password: str
@@ -55,6 +56,7 @@ class UserUpdate(BaseModel):
     password: Optional[str] = None
     avatar: Optional[str] = None
     company_share: Optional[float] = None
+    position: Optional[str] = None
 
 class User(UserBase):
     model_config = ConfigDict(extra="ignore")
