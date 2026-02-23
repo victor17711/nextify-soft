@@ -18,16 +18,20 @@ import {
   Sun, 
   Moon,
   Menu,
-  Bell
+  Bell,
+  FileText,
+  FolderOpen
 } from 'lucide-react';
 
 const navigation = [
   { name: 'Panou de Control', href: '/dashboard', icon: LayoutDashboard, adminOnly: false },
   { name: 'Angajați', href: '/employees', icon: Users, adminOnly: true },
   { name: 'Sarcini', href: '/tasks', icon: CheckSquare, adminOnly: false },
+  { name: 'Rapoarte', href: '/reports', icon: FileText, adminOnly: false },
   { name: 'Calendar', href: '/calendar', icon: CalendarDays, adminOnly: false },
   { name: 'Notițe', href: '/notes', icon: StickyNote, adminOnly: false },
   { name: 'Clienți', href: '/clients', icon: Briefcase, adminOnly: true },
+  { name: 'Documente', href: '/documents', icon: FolderOpen, adminOnly: true },
 ];
 
 const Sidebar = ({ mobile = false, onClose }) => {
