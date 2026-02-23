@@ -325,6 +325,7 @@ export const Employees = () => {
               <TableHeader>
                 <TableRow className="bg-muted/50">
                   <TableHead className="font-medium">Membru</TableHead>
+                  <TableHead className="font-medium">Specializare</TableHead>
                   <TableHead className="font-medium">Email</TableHead>
                   <TableHead className="font-medium">Telefon</TableHead>
                   <TableHead className="font-medium">Rol</TableHead>
