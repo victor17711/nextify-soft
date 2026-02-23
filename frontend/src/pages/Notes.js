@@ -297,9 +297,10 @@ export const Notes = () => {
                 <p className="text-sm text-muted-foreground whitespace-pre-wrap line-clamp-6">
                   {note.content}
                 </p>
-                <p className="text-xs text-muted-foreground mt-4">
-                  {formatDate(note.created_at)}
-                </p>
+                <div className="flex items-center justify-between mt-4 text-xs text-muted-foreground">
+                  <span>{note.creator_name}</span>
+                  <span>{formatDate(note.created_at)}</span>
+                </div>
               </CardContent>
             </Card>
           ))}
