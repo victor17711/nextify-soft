@@ -444,10 +444,14 @@ export const Tasks = () => {
                 </div>
 
                 <div className="space-y-2 text-sm text-muted-foreground">
-                  {task.due_date && (
+                  {(task.start_date || task.due_date) && (
                     <div className="flex items-center gap-2">
                       <Calendar className="h-4 w-4" />
-                      {formatDate(task.due_date)}
+                      <span>
+                        {task.start_date && formatDate(task.start_date)}
+                        {task.start_date && task.due_date && ' - '}
+                        {task.due_date && formatDate(task.due_date)}
+                      </span>
                     </div>
                   )}
                   {task.assignees?.length > 0 && (
