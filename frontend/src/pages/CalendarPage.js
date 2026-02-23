@@ -56,22 +56,27 @@ export const CalendarPage = () => {
     }
   };
 
-  // Get tasks grouped by date
-  const getTasksByDate = () => {
-    const tasksByDate = {};
-    tasks.forEach(task => {
-      if (task.due_date) {
-        const dateKey = task.due_date.split('T')[0];
-        if (!tasksByDate[dateKey]) {
-          tasksByDate[dateKey] = [];
-        }
-        tasksByDate[dateKey].push(task);
+  // Get tasks for a specific date (checks if date falls within start_date and due_date range)
+  const getTasksForDate = (dateStr) => {
+    return tasks.filter(task => {
+      const startDate = task.start_date ? task.start_date.split('T')[0] : null;
+      const dueDate = task.due_date ? task.due_date.split('T')[0] : null;
+      
+      // If task has both start and due date, check if dateStr is within range
+      if (startDate && dueDate) {
+        return dateStr >= startDate && dateStr <= dueDate;
       }
+      // If only start date, show on that date and after
+      if (startDate && !dueDate) {
+        return dateStr === startDate;
+      }
+      // If only due date, show on that date
+      if (!startDate && dueDate) {
+        return dateStr === dueDate;
+      }
+      return false;
     });
-    return tasksByDate;
   };
-
-  const tasksByDate = getTasksByDate();
 
   // Calendar calculations
   const year = currentDate.getFullYear();
@@ -98,7 +103,7 @@ export const CalendarPage = () => {
 
   const handleDayClick = (day) => {
     const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-    const dayTasks = tasksByDate[dateStr] || [];
+    const dayTasks = getTasksForDate(dateStr);
     setSelectedDate(new Date(year, month, day));
     setSelectedTasks(dayTasks);
     setDialogOpen(true);
@@ -119,6 +124,18 @@ export const CalendarPage = () => {
       month: 'long',
       day: 'numeric'
     });
+  };
+
+  const formatDateRange = (task) => {
+    const start = task.start_date ? new Date(task.start_date).toLocaleDateString('ro-RO') : null;
+    const end = task.due_date ? new Date(task.due_date).toLocaleDateString('ro-RO') : null;
+    
+    if (start && end) {
+      return `${start} - ${end}`;
+    }
+    if (start) return `Început: ${start}`;
+    if (end) return `Limită: ${end}`;
+    return '';
   };
 
   // Generate calendar days
@@ -189,7 +206,7 @@ export const CalendarPage = () => {
                   }
 
                   const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-                  const dayTasks = tasksByDate[dateStr] || [];
+                  const dayTasks = getTasksForDate(dateStr);
                   const hasHighPriority = dayTasks.some(t => t.priority === 'high' && t.status !== 'completed');
 
                   return (
@@ -296,6 +313,14 @@ export const CalendarPage = () => {
                       <p className="text-sm text-muted-foreground mb-3">
                         {task.description}
                       </p>
+                    )}
+
+                    {/* Date Range */}
+                    {(task.start_date || task.due_date) && (
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
+                        <CalendarDays className="h-4 w-4" />
+                        {formatDateRange(task)}
+                      </div>
                     )}
 
                     <div className="flex flex-wrap items-center gap-2">
