@@ -85,7 +85,11 @@ const Sidebar = ({ mobile = false, onClose }) => {
 
       {/* User Section */}
       <div className="p-4 border-t border-slate-700">
-        <div className="flex items-center gap-3 px-2 mb-4">
+        <Link
+          to="/profile"
+          onClick={onClose}
+          className="flex items-center gap-3 px-2 mb-4 rounded-lg hover:bg-slate-800 py-2 transition-colors"
+        >
           <Avatar className="h-10 w-10">
             <AvatarFallback className="bg-primary text-white font-heading">
               {user?.name?.charAt(0)?.toUpperCase() || 'U'}
@@ -97,7 +101,7 @@ const Sidebar = ({ mobile = false, onClose }) => {
               {isAdmin() ? 'Administrator' : 'Angajat'}
             </p>
           </div>
-        </div>
+        </Link>
 
         {/* Theme Toggle */}
         <Button
