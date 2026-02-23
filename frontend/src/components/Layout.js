@@ -20,7 +20,8 @@ import {
   Menu,
   Bell,
   FileText,
-  FolderOpen
+  FolderOpen,
+  Wallet
 } from 'lucide-react';
 
 const navigation = [
@@ -32,6 +33,7 @@ const navigation = [
   { name: 'Notițe', href: '/notes', icon: StickyNote, adminOnly: false },
   { name: 'Clienți', href: '/clients', icon: Briefcase, adminOnly: true },
   { name: 'Documente', href: '/documents', icon: FolderOpen, adminOnly: true },
+  { name: 'Cheltuieli', href: '/expenses', icon: Wallet, adminOnly: true },
 ];
 
 const Sidebar = ({ mobile = false, onClose }) => {
