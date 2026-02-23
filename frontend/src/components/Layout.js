@@ -85,15 +85,15 @@ const Sidebar = ({ mobile = false, onClose }) => {
       </nav>
 
       {/* User Section */}
-      <div className="p-4 border-t border-slate-700">
+      <div className="px-3 py-2 border-t border-slate-700">
         <Link
           to="/profile"
           onClick={onClose}
-          className="flex items-center gap-3 px-2 mb-4 rounded-lg hover:bg-slate-800 py-2 transition-colors"
+          className="flex items-center gap-2 px-2 mb-2 rounded-lg hover:bg-slate-800 py-1.5 transition-colors"
         >
-          <Avatar className="h-10 w-10">
+          <Avatar className="h-8 w-8">
             <AvatarImage src={user?.avatar} alt={user?.name} />
-            <AvatarFallback className="bg-primary text-white font-heading">
+            <AvatarFallback className="bg-primary text-white font-heading text-sm">
               {user?.name?.charAt(0)?.toUpperCase() || 'U'}
             </AvatarFallback>
           </Avatar>
@@ -105,38 +105,33 @@ const Sidebar = ({ mobile = false, onClose }) => {
           </div>
         </Link>
 
-        {/* Theme Toggle */}
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={toggleTheme}
-          data-testid="theme-toggle"
-          className="w-full justify-start text-slate-300 hover:text-white hover:bg-slate-800 mb-2"
-        >
-          {theme === 'light' ? (
-            <>
-              <Moon className="w-4 h-4 mr-2" />
-              Mod Întunecat
-            </>
-          ) : (
-            <>
-              <Sun className="w-4 h-4 mr-2" />
-              Mod Luminos
-            </>
-          )}
-        </Button>
+        <div className="flex gap-1">
+          {/* Theme Toggle */}
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={toggleTheme}
+            data-testid="theme-toggle"
+            className="flex-1 justify-center text-slate-300 hover:text-white hover:bg-slate-800 h-8 text-xs"
+          >
+            {theme === 'light' ? (
+              <Moon className="w-4 h-4" />
+            ) : (
+              <Sun className="w-4 h-4" />
+            )}
+          </Button>
 
-        {/* Logout */}
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={handleLogout}
-          data-testid="logout-button"
-          className="w-full justify-start text-slate-300 hover:text-white hover:bg-slate-800"
-        >
-          <LogOut className="w-4 h-4 mr-2" />
-          Deconectare
-        </Button>
+          {/* Logout */}
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={handleLogout}
+            data-testid="logout-button"
+            className="flex-1 justify-center text-slate-300 hover:text-white hover:bg-slate-800 h-8 text-xs"
+          >
+            <LogOut className="w-4 h-4" />
+          </Button>
+        </div>
       </div>
     </div>
   );
