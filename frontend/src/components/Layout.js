@@ -4,7 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
 import { Button } from './ui/button';
 import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
-import { Avatar, AvatarFallback } from './ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import logo from '../assets/new-logo.png';
 import { 
   LayoutDashboard, 
@@ -91,6 +91,7 @@ const Sidebar = ({ mobile = false, onClose }) => {
           className="flex items-center gap-3 px-2 mb-4 rounded-lg hover:bg-slate-800 py-2 transition-colors"
         >
           <Avatar className="h-10 w-10">
+            <AvatarImage src={user?.avatar} alt={user?.name} />
             <AvatarFallback className="bg-primary text-white font-heading">
               {user?.name?.charAt(0)?.toUpperCase() || 'U'}
             </AvatarFallback>
