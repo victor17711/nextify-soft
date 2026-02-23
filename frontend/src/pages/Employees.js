@@ -14,6 +14,29 @@ import { Plus, Pencil, Trash2, UserPlus, Search } from 'lucide-react';
 
 const API_URL = process.env.REACT_APP_BACKEND_URL;
 
+// Position options with colors
+const POSITIONS = [
+  { value: 'full_stack_developer', label: 'Full Stack Developer', color: 'bg-violet-500' },
+  { value: 'frontend_developer', label: 'Frontend Developer', color: 'bg-blue-500' },
+  { value: 'backend_developer', label: 'Backend Developer', color: 'bg-indigo-500' },
+  { value: 'mobile_developer', label: 'Mobile Developer', color: 'bg-cyan-500' },
+  { value: 'web_designer', label: 'Web Designer', color: 'bg-pink-500' },
+  { value: 'ui_ux_designer', label: 'UI/UX Designer', color: 'bg-fuchsia-500' },
+  { value: 'graphic_designer', label: 'Graphic Designer', color: 'bg-rose-500' },
+  { value: 'smm_specialist', label: 'SMM Specialist', color: 'bg-orange-500' },
+  { value: 'content_creator', label: 'Content Creator', color: 'bg-amber-500' },
+  { value: 'seo_specialist', label: 'SEO Specialist', color: 'bg-lime-500' },
+  { value: 'project_manager', label: 'Project Manager', color: 'bg-emerald-500' },
+  { value: 'business_developer', label: 'Business Developer', color: 'bg-teal-500' },
+  { value: 'sales_manager', label: 'Sales Manager', color: 'bg-green-500' },
+  { value: 'qa_engineer', label: 'QA Engineer', color: 'bg-yellow-500' },
+  { value: 'devops_engineer', label: 'DevOps Engineer', color: 'bg-red-500' },
+];
+
+const getPositionInfo = (positionValue) => {
+  return POSITIONS.find(p => p.value === positionValue) || null;
+};
+
 export const Employees = () => {
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -27,7 +50,8 @@ export const Employees = () => {
     phone: '',
     password: '',
     role: 'employee',
-    company_share: ''
+    company_share: '',
+    position: ''
   });
 
   useEffect(() => {
